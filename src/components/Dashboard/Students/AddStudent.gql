@@ -1,0 +1,5 @@
+mutation AddStudent ($firstName: String!, $lastName: String, $userCode: String!) {
+  insert_Students_one(object: {first_name: $firstName, last_name: $lastName, user_code: $userCode}) {
+    id
+  }
+}

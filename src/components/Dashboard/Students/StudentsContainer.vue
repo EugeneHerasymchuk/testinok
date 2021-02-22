@@ -11,6 +11,58 @@
         </div>
 
         <div v-else-if="data" class="result apollo">
+          <ApolloMutation
+            :mutation="require('./AddStudent.gql')"
+            :variables="{
+              firstName: studentForm.firstName,
+              lastName: studentForm.lastName,
+              userCode: generateUserCode(5),
+            }"
+            class="form"
+            @done="
+              () => {
+                resetStudentForm();
+                query.refetch();
+              }
+            "
+            @error="
+              () => {
+                $message({
+                  message: 'Error occured. Please try again',
+                  type: 'error',
+                  showClose: true,
+                });
+              }
+            "
+          >
+            <template slot-scope="{ mutate, loading }">
+              <el-row>
+                <el-col :span="12">
+                  <el-form
+                    :model="studentForm"
+                    :rules="studentFormRules"
+                    ref="studentForm"
+                  >
+                    <el-form-item label="First name" prop="firstName">
+                      <el-input v-model="studentForm.firstName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Last name" prop="lastName">
+                      <el-input v-model="studentForm.lastName"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                      <el-button
+                        type="primary"
+                        @click="submitStudentForm(mutate)"
+                        :disabled="loading"
+                        >Create student</el-button
+                      >
+                      <el-button @click="resetStudentForm()">Reset</el-button>
+                    </el-form-item>
+                  </el-form>
+                </el-col>
+              </el-row>
+            </template>
+          </ApolloMutation>
           <el-table :data="data.Students" stripe style="width: 100%">
             <el-table-column label="Name">
               <template slot-scope="scope">
@@ -40,11 +92,13 @@
                   class="form"
                   @done="() => query.refetch()"
                   @error="
-                    this.$message({
-                      message: 'Error occured',
-                      type: 'error',
-                      showClose: true,
-                    })
+                    () => {
+                      $message({
+                        message: 'Error occured',
+                        type: 'error',
+                        showClose: true,
+                      });
+                    }
                   "
                 >
                   <template slot-scope="{ mutate }">
@@ -77,10 +131,43 @@
   </div>
 </template>
 <script>
+import { nanoid } from "nanoid";
+
 export default {
   name: "StudentsContainer",
+  data() {
+    return {
+      studentForm: {
+        firstName: "",
+        lastName: "",
+      },
+      studentFormRules: {
+        firstName: [
+          {
+            required: true,
+            message: "Please provide at least firstName of the Student",
+            trigger: "blur",
+          },
+        ],
+      },
+    };
+  },
   methods: {
+    generateUserCode: (length) => nanoid(length),
+    submitStudentForm(submitCallback) {
+      this.$refs["studentForm"].validate((valid) => {
+        if (valid) {
+          submitCallback();
+        } else {
+          return false;
+        }
+      });
+    },
+    resetStudentForm() {
+      this.$refs["studentForm"].resetFields();
+    },
     copyCodeToClipboard() {
+      //TODO copy to clipboard
       this.$message({ message: "Copied", type: "success", showClose: true });
     },
   },
