@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import DashboardContainer from "../components/Dashboard/DashboardContainer.vue";
 import StudentsContainer from "../components/Dashboard/Students/StudentsContainer.vue";
+import TestBuilderContainer from "../components/Dashboard/TestBuilder/TestBuilderContainer.vue";
 import { authGuard } from "../auth/authGuard";
 import TestContainer from "../components/Test/TestContainer.vue";
 Vue.use(VueRouter);
@@ -22,6 +23,10 @@ const routes = [
       {
         path: "students",
         component: StudentsContainer
+      },
+      {
+        path: "tests",
+        component: TestBuilderContainer
       }
     ]
   },
