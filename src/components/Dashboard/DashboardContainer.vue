@@ -3,7 +3,9 @@
     <el-header>
       <el-row type="flex" justify="end">
         <el-col :span="3">
-          <button v-if="$auth.isAuthenticated" @click="logout">Log out</button>
+          <el-button v-if="$auth.isAuthenticated" @click="logout" type="info">
+            Log Out
+          </el-button>
         </el-col>
       </el-row>
     </el-header>
