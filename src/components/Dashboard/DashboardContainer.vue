@@ -23,11 +23,11 @@
             <span slot="title">Home</span>
           </el-menu-item>
           <el-menu-item index="/dashboard/students">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-user-solid"></i>
             <span slot="title">Students</span>
           </el-menu-item>
           <el-menu-item index="/dashboard/tests">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-s-claim"></i>
             <span slot="title">Tests</span>
           </el-menu-item>
         </el-menu>
