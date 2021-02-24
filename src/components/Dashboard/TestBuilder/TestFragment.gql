@@ -1,0 +1,7 @@
+fragment Test on Tests {
+    id
+    title
+    metadata
+    questions
+    is_published
+}

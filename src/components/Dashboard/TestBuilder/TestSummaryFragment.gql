@@ -1,0 +1,5 @@
+fragment TestSummary on Tests {
+    id
+    title
+    is_published
+}

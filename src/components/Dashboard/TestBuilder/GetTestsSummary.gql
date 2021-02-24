@@ -1,0 +1,7 @@
+#import "./TestSummaryFragment.gql"
+
+query GetTestsSummary{
+    Tests {
+        ...TestSummary
+    }
+}

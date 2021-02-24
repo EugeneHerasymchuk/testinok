@@ -1,0 +1,6 @@
+#import "./TestFragment.gql"
+query ($id: uuid!) {
+    Tests_by_pk(id: $id) {
+        ...Test
+    }
+}

@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import DashboardContainer from "../components/Dashboard/DashboardContainer.vue";
 import StudentsContainer from "../components/Dashboard/Students/StudentsContainer.vue";
+import TestsListContainer from "../components/Dashboard/TestBuilder/TestsListContainer.vue";
 import TestBuilderContainer from "../components/Dashboard/TestBuilder/TestBuilderContainer.vue";
 import { authGuard } from "../auth/authGuard";
 import TestContainer from "../components/Test/TestContainer.vue";
@@ -26,7 +27,13 @@ const routes = [
       },
       {
         path: "tests",
-        component: TestBuilderContainer
+        component: TestsListContainer
+      },
+      {
+        name: 'TestEditing',
+        path: "test/:testId",
+        component: TestBuilderContainer,
+        props: true
       }
     ]
   },

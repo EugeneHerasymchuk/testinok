@@ -1,0 +1,5 @@
+mutation RemoveTest ($id: uuid!) {
+  delete_Tests_by_pk(id: $id) {
+    id
+  }
+}

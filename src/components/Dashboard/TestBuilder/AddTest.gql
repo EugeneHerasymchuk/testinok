@@ -1,0 +1,5 @@
+mutation AddTest ($title: String!) {
+  insert_Tests_one(object: {title: $title}) {
+    id
+  }
+}
