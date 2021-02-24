@@ -2,15 +2,15 @@
   <div>
     <ApolloQuery :query="require('./GetStudents.gql')">
       <template v-slot="{ result: { error, data }, isLoading, query }">
-        <div v-if="isLoading" class="loading apollo">
+        <div v-if="isLoading">
           <i class="el-icon-loading"></i>
         </div>
 
-        <div v-else-if="error" class="error apollo">
+        <div v-else-if="error">
           An error occurred during loading
         </div>
 
-        <div v-else-if="data" class="result apollo">
+        <div v-else-if="data">
           <ApolloMutation
             :mutation="require('./AddStudent.gql')"
             :variables="{
@@ -51,12 +51,15 @@
                     </el-form-item>
                     <el-form-item>
                       <el-button
+                        size="mini"
                         type="primary"
                         @click="submitStudentForm(mutate)"
                         :disabled="loading"
                         >Create student</el-button
                       >
-                      <el-button @click="resetStudentForm()">Reset</el-button>
+                      <el-button size="mini" @click="resetStudentForm()">
+                        Reset
+                      </el-button>
                     </el-form-item>
                   </el-form>
                 </el-col>
@@ -71,7 +74,7 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="User Code">
+            <el-table-column label="Student Code">
               <template slot-scope="scope">
                 <el-button
                   type="primary"

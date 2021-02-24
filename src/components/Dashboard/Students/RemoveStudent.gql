@@ -1,5 +1,3 @@
-#import "./StudentFragment.gql"
-
 mutation removeStudent ($id: uuid!) {
   delete_Students_by_pk(id: $id) {
     id
