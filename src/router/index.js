@@ -10,10 +10,10 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/test/:id",
+    path: "/test/:testId",
     name: "Test",
     component: TestContainer,
-    props: (route) => ({ query: route.query.code })
+    props: true
   },
   {
     path: "/dashboard",

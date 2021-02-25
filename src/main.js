@@ -4,14 +4,13 @@ import router from "./router";
 import { createProvider } from "./plugins/vue-apollo";
 import "./plugins/element.js";
 import ElementUI from "element-ui";
-import locale from 'element-ui/lib/locale/lang/en'
-
-Vue.use(ElementUI, { locale })
-
-// Import the plugin here
+import locale from "element-ui/lib/locale/lang/en";
 import { Auth0Plugin } from "./auth";
+import copyToClipboardMixin from "./mixins/copyToClipboardMixin";
 
-// Install the authentication plugin here
+Vue.use(ElementUI, { locale });
+Vue.mixin(copyToClipboardMixin);
+
 Vue.use(Auth0Plugin, {
   domain: process.env.VUE_APP_AUTH0_DOMAIN,
   clientId: process.env.VUE_APP_AUTH0_CLIENT_ID,

@@ -79,7 +79,7 @@
                 <el-button
                   type="primary"
                   size="mini"
-                  @click="copyTestingCode(scope.row.user_code)"
+                  @click="copyTextToClipboardMixin(scope.row.user_code)"
                   >{{ scope.row.user_code }}
                   <i class="student-code__icon el-icon-copy-document"></i
                 ></el-button>
@@ -168,19 +168,7 @@ export default {
     },
     resetStudentForm() {
       this.$refs["studentForm"].resetFields();
-    },
-    async copyTestingCode(code) {
-      try {
-        await navigator.clipboard.writeText(code);
-        this.$message({ message: "Copied", type: "success", showClose: true });
-      } catch (e) {
-        this.$message({
-          message: "Erro during copying",
-          type: "error",
-          showClose: true,
-        });
-      }
-    },
+    }
   },
 };
 </script>
