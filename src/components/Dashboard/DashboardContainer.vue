@@ -1,21 +1,13 @@
 <template>
   <el-container>
     <el-header>
-      <el-row type="flex" justify="end">
-        <el-col :span="3">
-          <el-button v-if="$auth.isAuthenticated" @click="logout" type="info">
-            Log Out
-          </el-button>
-        </el-col>
-      </el-row>
-    </el-header>
-    <el-container>
-      <el-aside width="200px"
-        ><el-menu
+      <el-row type="flex" justify="space-between">
+        <el-menu
           :router="true"
           :default-active="this.$route.path"
           class="el-menu-vertical-demo"
           @open="handleOpen"
+          mode="horizontal"
           @close="handleClose"
         >
           <el-menu-item index="/dashboard">
@@ -31,7 +23,16 @@
             <span slot="title">Tests</span>
           </el-menu-item>
         </el-menu>
-      </el-aside>
+        <el-col :span="3">
+          <el-button v-if="$auth.isAuthenticated" @click="logout" type="info">
+            Log Out
+          </el-button>
+        </el-col>
+      </el-row>
+    </el-header>
+    <el-container>
+   
+        
       <el-container>
         <el-main><router-view></router-view></el-main>
       </el-container>
