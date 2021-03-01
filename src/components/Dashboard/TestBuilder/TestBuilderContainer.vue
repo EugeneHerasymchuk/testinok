@@ -1,7 +1,7 @@
 <template>
   <div>
     <ApolloQuery
-      :query="require('./GetTestById.gql')"
+      :query="require('./graphql/GetTestById.gql')"
       :variables="{
         id: testId,
       }"
@@ -21,7 +21,7 @@
             <el-col :span="12">
               <el-row>
                 <ApolloMutation
-                  :mutation="require('./UpdateTest.gql')"
+                  :mutation="require('./graphql/UpdateTest.gql')"
                   :variables="{
                     id: testId,
                     is_published: !data.Tests_by_pk.is_published,
@@ -82,24 +82,33 @@
             </el-col>
           </el-row>
           <el-row>
-            <!-- <el-col :span="10">
-              <div>Assign students to this test(not ready)</div>
-              <el-cascader
-                placeholder="Type name of the student"
-                :options="options"
-                :props="{ multiple: true }"
-                filterable
-                collapse-tags
-                clearable
-              >
-                <template slot-scope="{ node, data }">
-                  <span>{{ data.label }}</span>
-                  <span v-if="!node.isLeaf">
-                    ({{ data.children.length }})
-                  </span>
+            <el-table
+              :data="data.Tests_by_pk.questions"
+              stripe
+              style="width: 100%"
+            >
+              <el-table-column label="Title">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.title }}</span>
                 </template>
-              </el-cascader>
-            </el-col> -->
+              </el-table-column>
+            </el-table>
+          </el-row>
+          <el-row>
+            <div>Add test with template</div>
+            <el-select v-model="selectedQuestionTypeToCreate" placeholder="Select">
+              <el-option
+                v-for="questionType in questionTypes"
+                :key="questionType.value"
+                :label="questionType.label"
+                :value="questionType.value"
+              >
+                <span style="float: left">{{ questionType.label }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{
+                  questionType.icon
+                }}</span>
+              </el-option>
+            </el-select>
           </el-row>
         </div>
       </template>
@@ -112,21 +121,14 @@ export default {
   name: "TestBuilderContainer",
   data() {
     return {
-      options: [
-        {
-          value: "guide",
-          label: "Group 1",
-          children: [
-            {
-              value: "disciplines",
-              label: "Yev Her",
-            },
-          ],
-        },
-      ],
+      selectedQuestionTypeToCreate: '',
+      currentSelectedQuestion: {}
     };
   },
   methods: {
+    saveCurrentQuestion(question) {
+      console.log("question was saved", question);
+    },
     copyTestLink() {
       const link = process.env.VUE_APP_DEV_DOMAIN + "/test/" + this.testId;
       this.copyTextToClipboardMixin(link);
@@ -140,7 +142,7 @@ export default {
       }
     ) {
       const query = {
-        query: require("./GetTestById.gql"),
+        query: require("./graphql/GetTestById.gql"),
         variables: {
           id: this.testId,
         },
@@ -159,6 +161,9 @@ export default {
 };
 </script>
 <style>
+.el-row {
+  margin-bottom: 20px;
+}
 .builder__copy-link {
   margin-top: 1rem;
 }

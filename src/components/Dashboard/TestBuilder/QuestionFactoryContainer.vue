@@ -4,7 +4,7 @@
 <script>
 // To list questions with a container that will render a component using a :is
 export default {
-  props: ["testId", "questions"],
+  props: ["testId", "question"],
   name: "QuestionFactoryContainer",
 };
 </script>
