@@ -1,0 +1,7 @@
+mutation UnAssignStudentTest ($student_id: uuid, $test_id: uuid) {
+    delete_Students_Tests(where: {student_id: {_eq: $student_id}, test_id: {_eq: $test_id}}) {
+        returning {
+            student_id
+        }
+    }
+}

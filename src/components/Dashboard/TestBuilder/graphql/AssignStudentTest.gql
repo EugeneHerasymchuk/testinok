@@ -1,0 +1,7 @@
+mutation AssignStudentTest ($student_id: uuid, $test_id: uuid) {
+  insert_Students_Tests(objects: {student_id: $student_id, test_id: $test_id}) {
+      returning{
+          student_id
+      }
+  }
+}

@@ -1,6 +1,14 @@
 #import "./TestFragment.gql"
+#import "../../Students/StudentFragment.gql"
+
 query GetTestById ($id: uuid!) {
     Tests_by_pk(id: $id) {
-        ...Test
+        ...Test,
+        Students_Tests {
+            student_id
+        }
+    }
+    Students {
+        ...Student
     }
 }
