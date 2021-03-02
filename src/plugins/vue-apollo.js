@@ -1,9 +1,6 @@
 import Vue from "vue";
 import VueApollo from "vue-apollo";
-import {
-  createApolloClient,
-  restartWebsockets
-} from "vue-cli-plugin-apollo/graphql-client";
+import { createApolloClient } from "vue-cli-plugin-apollo/graphql-client";
 import { getInstance } from "../auth/index";
 import { setContext } from "apollo-link-context";
 
@@ -97,7 +94,6 @@ export function createProvider(options = {}) {
 
 // Manually call this when user log in
 export async function onLogin(apolloClient) {
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
   try {
     await apolloClient.resetStore();
   } catch (e) {
@@ -108,7 +104,6 @@ export async function onLogin(apolloClient) {
 
 // Manually call this when user log out
 export async function onLogout(apolloClient) {
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
   try {
     await apolloClient.resetStore();
   } catch (e) {
