@@ -1,0 +1,6 @@
+query GetStudentByUserCode ($user_code: String!) {
+  Students(where: {user_code: {_eq: $user_code}}) {
+    last_name
+    first_name
+  }
+}

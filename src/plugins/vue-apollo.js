@@ -71,9 +71,17 @@ export function createProvider(options = {}) {
     ...options
   });
 
+  const studentApolloClient = createApolloClient({
+    httpEndpoint,
+    ...options
+  });
+
   // Create vue apollo provider
   const apolloProvider = new VueApollo({
     defaultClient: apolloClient,
+    clients: {
+      student: studentApolloClient.apolloClient
+    },
     defaultOptions: {
       $query: {
         // fetchPolicy: 'cache-and-network',
@@ -82,7 +90,7 @@ export function createProvider(options = {}) {
     errorHandler(error) {
       // eslint-disable-next-line no-console
       console.log(
-        "%cError",
+        "%cErrorżmine",
         "background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;",
         error.message
       );
