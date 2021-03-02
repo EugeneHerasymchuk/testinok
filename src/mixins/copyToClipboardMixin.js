@@ -3,9 +3,9 @@ export default {
     async copyTextToClipboardMixin(code) {
       try {
         await navigator.clipboard.writeText(code);
-        this.$message({ message: "Copied", type: "success", showClose: true });
+        this.$notify({ message: "Copied", type: "success", showClose: true });
       } catch (e) {
-        this.$message({
+        this.$notify({
           message: "Erro during copying",
           type: "error",
           showClose: true

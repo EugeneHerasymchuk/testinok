@@ -19,69 +19,76 @@
               ><div>Test: {{ data.Tests_by_pk.title }}</div>
             </el-col>
             <el-col :span="12">
-              <el-row>
-                <ApolloMutation
-                  :mutation="require('./graphql/UpdateTest.gql')"
-                  :variables="{
-                    id: testId,
-                    is_published: !data.Tests_by_pk.is_published,
-                  }"
-                  :update="updateCacheAfterTogglePublish"
-                  class="form"
-                  @done="
-                    () => {
-                      $message({
-                        message: `Test '${data.Tests_by_pk.title}' was ${
+              <el-row type="flex" align="middle">
+                <el-col :span="5">
+                  <ApolloMutation
+                    :mutation="require('./graphql/UpdateTest.gql')"
+                    :variables="{
+                      id: testId,
+                      is_published: !data.Tests_by_pk.is_published,
+                    }"
+                    :update="updateCacheAfterTogglePublish"
+                    class="form"
+                    @done="
+                      () => {
+                        $notify({
+                          message: `Test '${data.Tests_by_pk.title}' was ${
+                            data.Tests_by_pk.is_published
+                              ? 'published'
+                              : 'unpublished'
+                          }`,
+                          type: 'success',
+                        });
+                      }
+                    "
+                    @error="
+                      () => {
+                        $notify({
+                          message: 'Error occured. Please try again',
+                          type: 'error',
+                        });
+                      }
+                    "
+                  >
+                    <template slot-scope="{ mutate, loading }">
+                      <el-button
+                        size="medium"
+                        :type="
+                          data.Tests_by_pk.is_published ? 'info' : 'success'
+                        "
+                        :icon="
                           data.Tests_by_pk.is_published
-                            ? 'published'
-                            : 'unpublished'
-                        }`,
-                        type: 'success',
-                        showClose: true,
-                      });
-                    }
-                  "
-                  @error="
-                    () => {
-                      $message({
-                        message: 'Error occured. Please try again',
-                        type: 'error',
-                        showClose: true,
-                      });
-                    }
-                  "
-                >
-                  <template slot-scope="{ mutate, loading }">
-                    <el-button
-                      size="medium"
-                      :type="data.Tests_by_pk.is_published ? 'info' : 'success'"
-                      :icon="
-                        data.Tests_by_pk.is_published
-                          ? 'el-icon-bottom-left'
-                          : 'el-icon-top-right'
-                      "
-                      :loading="loading"
-                      @click="mutate"
-                      round
-                      plain
-                      >{{
-                        data.Tests_by_pk.is_published ? "Unpublish" : "Publish"
-                      }}</el-button
-                    >
-                  </template>
-                </ApolloMutation>
-                <div
-                  class="builder__copy-link"
-                  v-if="data.Tests_by_pk.is_published"
-                >
-                  <el-button type="primary" size="mini" @click="copyTestLink">
-                    Copy link to test
-                    <i class="student-code__icon el-icon-copy-document"></i>
-                  </el-button></div
-              ></el-row>
+                            ? 'el-icon-bottom-left'
+                            : 'el-icon-top-right'
+                        "
+                        :loading="loading"
+                        @click="mutate"
+                        round
+                        plain
+                        >{{
+                          data.Tests_by_pk.is_published
+                            ? "Unpublish"
+                            : "Publish"
+                        }}</el-button
+                      >
+                    </template>
+                  </ApolloMutation>
+                </el-col>
+                <el-col :span="5">
+                  <div
+                    class="builder__copy-link"
+                    v-if="data.Tests_by_pk.is_published"
+                  >
+                    <el-button type="primary" size="mini" @click="copyTestLink">
+                      Copy link to test
+                      <i class="student-code__icon el-icon-copy-document"></i>
+                    </el-button>
+                  </div>
+                </el-col>
+              </el-row>
             </el-col>
           </el-row>
-          <el-row>
+          <!-- <el-row>
             <el-table
               :data="data.Tests_by_pk.questions"
               stripe
@@ -93,22 +100,80 @@
                 </template>
               </el-table-column>
             </el-table>
-          </el-row>
+          </el-row> -->
           <el-row>
-            <div>Add test with template</div>
-            <el-select v-model="selectedQuestionTypeToCreate" placeholder="Select">
-              <el-option
-                v-for="questionType in questionTypes"
-                :key="questionType.value"
-                :label="questionType.label"
-                :value="questionType.value"
+            <el-table :data="data.Students" stripe style="width: 100%">
+              <el-table-column label="Student Name">
+                <template slot-scope="scope">
+                  <span>{{
+                    scope.row.first_name + " " + scope.row.last_name
+                  }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                :label="`Assign student to test: ${data.Tests_by_pk.title}`"
               >
-                <span style="float: left">{{ questionType.label }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px">{{
-                  questionType.icon
-                }}</span>
-              </el-option>
-            </el-select>
+                <template slot-scope="scope">
+                  <ApolloMutation
+                    :mutation="
+                      isStudentAssigned(
+                        data.Tests_by_pk.Students_Tests,
+                        scope.row.id
+                      )
+                        ? require('./graphql/UnAssignStudentTest.gql')
+                        : require('./graphql/AssignStudentTest.gql')
+                    "
+                    :variables="{
+                      test_id: testId,
+                      student_id: scope.row.id,
+                    }"
+                    :update="updateCacheAfterTogglePublish"
+                    class="form"
+                    @done="
+                      () => {
+                        $notify({
+                          message: `${scope.row.first_name} ${
+                            scope.row.last_name
+                          } was ${
+                            isStudentAssigned(
+                              data.Tests_by_pk.Students_Tests,
+                              scope.row.id
+                            )
+                              ? 'assigned'
+                              : 'unassigned'
+                          } to a test`,
+                          type: 'success',
+                        });
+                      }
+                    "
+                    @error="
+                      () => {
+                        $notify({
+                          message: 'Error occured. Please try again',
+                          type: 'error',
+                        });
+                      }
+                    "
+                  >
+                    <template slot-scope="{ mutate, loading }">
+                      <el-switch
+                        :value="
+                          isStudentAssigned(
+                            data.Tests_by_pk.Students_Tests,
+                            scope.row.id
+                          )
+                        "
+                        @change="mutate"
+                        :disabled="loading"
+                        active-text="Assigned"
+                        inactive-text="Unassigned"
+                      >
+                      </el-switch>
+                    </template>
+                  </ApolloMutation>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-row>
         </div>
       </template>
@@ -121,13 +186,13 @@ export default {
   name: "TestBuilderContainer",
   data() {
     return {
-      selectedQuestionTypeToCreate: '',
-      currentSelectedQuestion: {}
+      selectedQuestionTypeToCreate: "",
+      currentLoadingStudentId: "",
     };
   },
   methods: {
-    saveCurrentQuestion(question) {
-      console.log("question was saved", question);
+    isStudentAssigned(studentsList, studentId) {
+      return studentsList.some(({ student_id }) => student_id === studentId);
     },
     copyTestLink() {
       const link = process.env.VUE_APP_DEV_DOMAIN + "/test/" + this.testId;
@@ -137,25 +202,49 @@ export default {
       store,
       {
         data: {
-          update_Tests_by_pk: { is_published },
+          update_Tests_by_pk,
+          delete_Students_Tests,
+          insert_Students_Tests,
         },
       }
     ) {
-      const query = {
-        query: require("./graphql/GetTestById.gql"),
-        variables: {
-          id: this.testId,
-        },
-      };
+      try {
+        const query = {
+          query: require("./graphql/GetTestById.gql"),
+          variables: {
+            id: this.testId,
+          },
+        };
 
-      const data = store.readQuery(query);
+        const data = store.readQuery(query);
 
-      data.Tests_by_pk.is_published = is_published;
+        if (update_Tests_by_pk) {
+          data.Tests_by_pk.is_published = update_Tests_by_pk.is_published;
+        }
 
-      store.writeQuery({
-        ...query,
-        data,
-      });
+        if (delete_Students_Tests && delete_Students_Tests.returning.length) {
+          const removedStudentIndex = data.Tests_by_pk.Students_Tests.findIndex(
+            ({ student_id }) =>
+              student_id === delete_Students_Tests.returning[0].student_id
+          );
+          if (removedStudentIndex !== -1) {
+            data.Tests_by_pk.Students_Tests.splice(removedStudentIndex, 1);
+          }
+        }
+
+        if (insert_Students_Tests && insert_Students_Tests.returning.length) {
+          data.Tests_by_pk.Students_Tests.push(
+            insert_Students_Tests.returning[0]
+          );
+        }
+
+        store.writeQuery({
+          ...query,
+          data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
@@ -163,8 +252,5 @@ export default {
 <style>
 .el-row {
   margin-bottom: 20px;
-}
-.builder__copy-link {
-  margin-top: 1rem;
 }
 </style>

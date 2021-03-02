@@ -27,7 +27,7 @@
             "
             @error="
               () => {
-                $message({
+                $notify({
                   message: 'Error occured. Please try again',
                   type: 'error',
                   showClose: true,
@@ -96,10 +96,9 @@
                   @done="() => query.refetch()"
                   @error="
                     () => {
-                      $message({
+                      $notify({
                         message: 'Error occured',
-                        type: 'error',
-                        showClose: true,
+                        type: 'error'
                       });
                     }
                   "
