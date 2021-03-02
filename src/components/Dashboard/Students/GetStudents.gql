@@ -1,7 +1,0 @@
-#import "./StudentFragment.gql"
-
-query {
-    Students {
-        ...Student
-    }
-}

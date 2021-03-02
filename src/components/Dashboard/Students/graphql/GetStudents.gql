@@ -1,0 +1,7 @@
+#import "../../shared/graphql/StudentFragment.gql"
+
+query {
+    Students {
+        ...Student
+    }
+}

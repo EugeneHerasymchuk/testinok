@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ApolloQuery :query="require('./GetStudents.gql')">
+    <ApolloQuery :query="require('./graphql/GetStudents.gql')">
       <template v-slot="{ result: { error, data }, isLoading, query }">
         <div v-if="isLoading">
           <i class="el-icon-loading"></i>
@@ -12,7 +12,7 @@
 
         <div v-else-if="data">
           <ApolloMutation
-            :mutation="require('./AddStudent.gql')"
+            :mutation="require('./graphql/AddStudent.gql')"
             :variables="{
               firstName: studentForm.firstName,
               lastName: studentForm.lastName,
@@ -88,7 +88,7 @@
             <el-table-column>
               <template slot-scope="scope">
                 <ApolloMutation
-                  :mutation="require('./RemoveStudent.gql')"
+                  :mutation="require('./graphql/RemoveStudent.gql')"
                   :variables="{
                     id: scope.row.id,
                   }"
