@@ -33,6 +33,16 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
+const notAuthLink = setContext(async (_, { headers }) => {
+  const token = localStorage.getItem("x-hasura-user-code");
+  return {
+    headers: {
+      ...headers,
+      "x-hasura-user-code": token
+    }
+  };
+});
+
 // Config
 const defaultOptions = {
   // You can use `https` for secure connection (recommended in production)
@@ -73,6 +83,7 @@ export function createProvider(options = {}) {
 
   const studentApolloClient = createApolloClient({
     httpEndpoint,
+    link: notAuthLink,
     ...options
   });
 

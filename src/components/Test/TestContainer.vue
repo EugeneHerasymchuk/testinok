@@ -4,7 +4,7 @@
       Please provide your userCode
       <el-input v-model="userCode" placeholder="Code..." />
 
-      <el-button :disabled="userCode.length < 3" @click="codeProvided = true">
+      <el-button :disabled="userCode.length < 3" @click="provideCode">
         Enter a code
       </el-button>
     </div>
@@ -38,9 +38,7 @@
               </el-table>
             </el-col>
             <el-col :span="12">
-              <el-button @click="codeProvided = false">
-                Change the code
-              </el-button>
+              <el-button @click="changeCode"> Change the code </el-button>
             </el-col>
           </el-row>
         </div>
@@ -57,6 +55,24 @@ export default {
       userCode: "",
       codeProvided: false,
     };
+  },
+  mounted() {
+    const token = localStorage.getItem("x-hasura-user-code");
+    if (token) {
+      this.codeProvided = true;
+      this.userCode = token;
+    }
+  },
+  methods: {
+    changeCode() {
+      this.userCode = "";
+      localStorage.removeItem("x-hasura-user-code");
+      this.codeProvided = false;
+    },
+    provideCode() {
+      localStorage.setItem("x-hasura-user-code", this.userCode);
+      this.codeProvided = true;
+    },
   },
 };
 </script>
