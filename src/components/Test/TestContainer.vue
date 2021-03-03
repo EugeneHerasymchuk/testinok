@@ -27,7 +27,15 @@
         <div v-else-if="data">
           <el-row>
             <el-col :span="12">
-              <div>Test: {{ data.Tests_by_pk.title }}</div>
+              <el-table :data="data.Students" stripe style="width: 100%">
+                <el-table-column label="Name">
+                  <template slot-scope="scope">
+                    <span>{{
+                      scope.row.first_name + " " + scope.row.last_name
+                    }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
             </el-col>
             <el-col :span="12">
               <el-button @click="codeProvided = false">
