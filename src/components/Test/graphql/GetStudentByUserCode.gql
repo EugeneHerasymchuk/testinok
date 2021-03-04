@@ -1,5 +1,10 @@
 query GetStudentByUserCode ($user_code: String!) {
   Students(where: {user_code: {_eq: $user_code}}) {
     first_name
+    Students_Tests {
+      Test {
+        title
+      }
+    }
   }
 }

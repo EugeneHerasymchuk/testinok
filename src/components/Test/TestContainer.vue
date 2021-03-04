@@ -24,15 +24,26 @@
 
         <div v-else-if="error">An error occurred during loading</div>
 
-        <div v-else-if="data">
+        <div v-else-if="data && data.Students.length">
           <el-row>
             <el-col :span="12">
               <el-table :data="data.Students" stripe style="width: 100%">
                 <el-table-column label="Name">
                   <template slot-scope="scope">
-                    <span>{{
-                      scope.row.first_name + " " + scope.row.last_name
-                    }}</span>
+                    <span>{{ scope.row.first_name }}</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+
+              <el-table
+                v-if="data.Students[0].Students_Tests.length"
+                :data="data.Students[0].Students_Tests"
+                stripe
+                style="width: 100%"
+              >
+                <el-table-column label="Test title">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.Test.title }}</span>
                   </template>
                 </el-table-column>
               </el-table>
