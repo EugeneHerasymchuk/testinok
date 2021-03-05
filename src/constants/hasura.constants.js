@@ -1,0 +1,1 @@
+export const HASURA_CODE_HEADER = 'x-hasura-user-code';

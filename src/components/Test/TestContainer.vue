@@ -58,6 +58,8 @@
   </div>
 </template>
 <script>
+import { HASURA_CODE_HEADER } from "../../constants/hasura.constants";
+
 export default {
   props: ["testId"],
   name: "TestContainer",
@@ -68,7 +70,7 @@ export default {
     };
   },
   mounted() {
-    const token = localStorage.getItem("x-hasura-user-code");
+    const token = localStorage.getItem(HASURA_CODE_HEADER);
     if (token) {
       this.codeProvided = true;
       this.userCode = token;
@@ -77,11 +79,11 @@ export default {
   methods: {
     changeCode() {
       this.userCode = "";
-      localStorage.removeItem("x-hasura-user-code");
+      localStorage.removeItem(HASURA_CODE_HEADER);
       this.codeProvided = false;
     },
     provideCode() {
-      localStorage.setItem("x-hasura-user-code", this.userCode);
+      localStorage.setItem(HASURA_CODE_HEADER, this.userCode);
       this.codeProvided = true;
     },
   },

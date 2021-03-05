@@ -3,6 +3,7 @@ import VueApollo from "vue-apollo";
 import { createApolloClient } from "vue-cli-plugin-apollo/graphql-client";
 import { getInstance } from "../auth/index";
 import { setContext } from "apollo-link-context";
+import { HASURA_CODE_HEADER } from "../constants/hasura.constants";
 
 // Install the vue plugin
 Vue.use(VueApollo);
@@ -34,43 +35,22 @@ const authLink = setContext(async (_, { headers }) => {
 });
 
 const notAuthLink = setContext(async (_, { headers }) => {
-  const token = localStorage.getItem("x-hasura-user-code");
+  const token = localStorage.getItem(HASURA_CODE_HEADER);
   return {
     headers: {
       ...headers,
-      "x-hasura-user-code": token
+      [HASURA_CODE_HEADER]: token
     }
   };
 });
 
 // Config
 const defaultOptions = {
-  // You can use `https` for secure connection (recommended in production)
   httpEndpoint,
-  // You can use `wss` for secure connection (recommended in production)
-  // Use `null` to disable subscriptions
   wsEndpoint: null,
-
-  // Enable Automatic Query persisting with Apollo Engine
   persisting: false,
-  // Use websockets for everything (no HTTP)
-  // You need to pass a `wsEndpoint` for this to work
-  // Is being rendered on the server?
   ssr: false,
-
-  // Override default apollo link
-  // note: don't override httpLink here, specify httpLink options in the
-  // httpLinkOptions property of defaultOptions.
   link: authLink
-
-  // Override default cache
-  // cache: myCache
-
-  // Additional ApolloClient options
-  // apollo: { ... }
-
-  // Client local data (see apollo-link-state)
-  // clientState: { resolvers: { ... }, defaults: { ... } }
 };
 
 // Call this in the Vue app file
