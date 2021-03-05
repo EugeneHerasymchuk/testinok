@@ -88,93 +88,85 @@
               </el-row>
             </el-col>
           </el-row>
-          <!-- <el-row>
-            <el-table
-              :data="data.Tests_by_pk.questions"
-              stripe
-              style="width: 100%"
-            >
-              <el-table-column label="Title">
-                <template slot-scope="scope">
-                  <span>{{ scope.row.title }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-row> -->
-          <el-row>
-            <el-table :data="data.Students" stripe style="width: 100%">
-              <el-table-column label="Student Name">
-                <template slot-scope="scope">
-                  <span>{{
-                    scope.row.first_name + " " + scope.row.last_name
-                  }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                :label="`Assign student to test: ${data.Tests_by_pk.title}`"
-              >
-                <template slot-scope="scope">
-                  <ApolloMutation
-                    :mutation="
-                      isStudentAssigned(
-                        data.Tests_by_pk.Students_Tests,
-                        scope.row.id
-                      )
-                        ? require('./graphql/UnAssignStudentTest.gql')
-                        : require('./graphql/AssignStudentTest.gql')
-                    "
-                    :variables="{
-                      test_id: testId,
-                      student_id: scope.row.id,
-                    }"
-                    :update="updateCacheAfterTogglePublish"
-                    class="form"
-                    @done="
-                      () => {
-                        $notify({
-                          message: `${scope.row.first_name} ${
-                            scope.row.last_name
-                          } was ${
-                            isStudentAssigned(
-                              data.Tests_by_pk.Students_Tests,
-                              scope.row.id
-                            )
-                              ? 'assigned'
-                              : 'unassigned'
-                          } to a test`,
-                          type: 'success',
-                        });
-                      }
-                    "
-                    @error="
-                      () => {
-                        $notify({
-                          message: 'Error occured. Please try again',
-                          type: 'error',
-                        });
-                      }
-                    "
+          <el-collapse v-model="activeName" accordion>
+            <el-collapse-item title="Assign Students" name="1">
+              <el-row>
+                <el-table :data="data.Students" stripe style="width: 100%">
+                  <el-table-column label="Student Name">
+                    <template slot-scope="scope">
+                      <span>{{
+                        scope.row.first_name + " " + scope.row.last_name
+                      }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    :label="`Assign student to test: ${data.Tests_by_pk.title}`"
                   >
-                    <template slot-scope="{ mutate, loading }">
-                      <el-switch
-                        :value="
+                    <template slot-scope="scope">
+                      <ApolloMutation
+                        :mutation="
                           isStudentAssigned(
                             data.Tests_by_pk.Students_Tests,
                             scope.row.id
                           )
+                            ? require('./graphql/UnAssignStudentTest.gql')
+                            : require('./graphql/AssignStudentTest.gql')
                         "
-                        @change="mutate"
-                        :disabled="loading"
-                        active-text="Assigned"
-                        inactive-text="Unassigned"
+                        :variables="{
+                          test_id: testId,
+                          student_id: scope.row.id,
+                        }"
+                        :update="updateCacheAfterTogglePublish"
+                        class="form"
+                        @done="
+                          () => {
+                            $notify({
+                              message: `${scope.row.first_name} ${
+                                scope.row.last_name
+                              } was ${
+                                isStudentAssigned(
+                                  data.Tests_by_pk.Students_Tests,
+                                  scope.row.id
+                                )
+                                  ? 'assigned'
+                                  : 'unassigned'
+                              } to a test`,
+                              type: 'success',
+                            });
+                          }
+                        "
+                        @error="
+                          () => {
+                            $notify({
+                              message: 'Error occured. Please try again',
+                              type: 'error',
+                            });
+                          }
+                        "
                       >
-                      </el-switch>
+                        <template slot-scope="{ mutate, loading }">
+                          <el-switch
+                            :value="
+                              isStudentAssigned(
+                                data.Tests_by_pk.Students_Tests,
+                                scope.row.id
+                              )
+                            "
+                            @change="mutate"
+                            :disabled="loading"
+                            active-text="Assigned"
+                            inactive-text="Unassigned"
+                          >
+                          </el-switch>
+                        </template>
+                      </ApolloMutation>
                     </template>
-                  </ApolloMutation>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-row>
+                  </el-table-column>
+                </el-table>
+              </el-row>
+            </el-collapse-item>
+            <el-collapse-item title="Questions" name="2"> </el-collapse-item>
+          </el-collapse>
         </div>
       </template>
     </ApolloQuery>
@@ -188,6 +180,7 @@ export default {
     return {
       selectedQuestionTypeToCreate: "",
       currentLoadingStudentId: "",
+      activeName: "0",
     };
   },
   methods: {

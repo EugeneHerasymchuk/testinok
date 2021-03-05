@@ -40,6 +40,7 @@
                     :model="testForm"
                     :rules="testFormRules"
                     ref="testForm"
+                    @submit.native.prevent
                   >
                     <el-form-item label="Title" prop="title">
                       <el-input v-model="testForm.title"></el-input>
