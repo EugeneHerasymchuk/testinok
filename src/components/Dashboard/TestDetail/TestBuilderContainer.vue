@@ -165,7 +165,9 @@
                 </el-table>
               </el-row>
             </el-collapse-item>
-            <el-collapse-item title="Questions" name="2"> </el-collapse-item>
+            <el-collapse-item title="Questions" name="2"
+              ><question-factory-container></question-factory-container>
+            </el-collapse-item>
           </el-collapse>
         </div>
       </template>
@@ -173,7 +175,9 @@
   </div>
 </template>
 <script>
+import QuestionFactoryContainer from "./QuestionFactoryContainer.vue";
 export default {
+  components: { QuestionFactoryContainer },
   props: ["testId"],
   name: "TestBuilderContainer",
   data() {
