@@ -7,9 +7,11 @@ import ElementUI from "element-ui";
 import locale from "element-ui/lib/locale/lang/en";
 import { Auth0Plugin } from "./auth";
 import copyToClipboardMixin from "./mixins/copyToClipboardMixin";
+import questionFactoryMixin from "./mixins/questionFactoryMixin";
 
 Vue.use(ElementUI, { locale });
 Vue.mixin(copyToClipboardMixin);
+Vue.mixin(questionFactoryMixin);
 
 Vue.use(Auth0Plugin, {
   domain: process.env.VUE_APP_AUTH0_DOMAIN,

@@ -4,7 +4,8 @@ export const QUESTION_TYPES = {
   TextMatching: "TextMatching",
   PictureMatching: "PictureMatching",
   SingleChoice: "SingleChoice",
-  MultipleChoice: "MultipleChoice"
+  MultipleChoice: "MultipleChoice",
+  RightOrder: "RightOrder"
 };
 
 export const QUESTION_OPTIONS = [

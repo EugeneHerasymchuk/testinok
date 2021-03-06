@@ -11,6 +11,10 @@ export default {
           showClose: true
         });
       }
+    },
+    copyTestLink(testId) {
+      const link = process.env.VUE_APP_DEV_DOMAIN + "/test/" + testId;
+      this.copyTextToClipboardMixin(link);
     }
   }
 };

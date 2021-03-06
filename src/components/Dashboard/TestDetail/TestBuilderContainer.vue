@@ -79,7 +79,11 @@
                     class="builder__copy-link"
                     v-if="data.Tests_by_pk.is_published"
                   >
-                    <el-button type="primary" size="mini" @click="copyTestLink">
+                    <el-button
+                      type="primary"
+                      size="mini"
+                      @click="copyTestLink(this.testId)"
+                    >
                       Copy link to test
                       <i class="student-code__icon el-icon-copy-document"></i>
                     </el-button>
@@ -165,8 +169,27 @@
                 </el-table>
               </el-row>
             </el-collapse-item>
-            <el-collapse-item title="Questions" name="2"
-              ><question-factory-container></question-factory-container>
+            <el-collapse-item title="Questions" name="2">
+              <QuestionFactoryContainer
+                v-if="editingMode"
+                @closeWithoutSaving="toggleEditingMode"
+                @saveQuestion="toggleEditingMode"
+              />
+
+              <el-dropdown v-else @command="addNewQuestion">
+                <span class="el-dropdown-link">
+                  Add new question
+                  <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item :command="QUESTION_TYPES.RightOrder">
+                    Right Order in sentence
+                  </el-dropdown-item>
+                  <el-dropdown-item command="more" disabled>
+                    More coming...
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </el-collapse-item>
           </el-collapse>
         </div>
@@ -182,18 +205,13 @@ export default {
   name: "TestBuilderContainer",
   data() {
     return {
-      selectedQuestionTypeToCreate: "",
-      currentLoadingStudentId: "",
       activeName: "0",
+      editingMode: false,
     };
   },
   methods: {
     isStudentAssigned(studentsList, studentId) {
       return studentsList.some(({ student_id }) => student_id === studentId);
-    },
-    copyTestLink() {
-      const link = process.env.VUE_APP_DEV_DOMAIN + "/test/" + this.testId;
-      this.copyTextToClipboardMixin(link);
     },
     updateCacheAfterTogglePublish(
       store,
@@ -243,11 +261,20 @@ export default {
         console.log(e);
       }
     },
+    addNewQuestion() {
+      this.toggleEditingMode();
+    },
+    toggleEditingMode() {
+      this.editingMode = !this.editingMode;
+    },
   },
 };
 </script>
 <style>
 .el-row {
   margin-bottom: 20px;
+}
+.el-dropdown-link {
+  cursor: pointer;
 }
 </style>
