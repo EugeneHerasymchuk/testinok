@@ -1,4 +1,4 @@
-import { QUESTION_OPTIONS, QUESTION_TYPES, Question } from "./QuestionFactory";
+import { QUESTION_OPTIONS, QUESTION_TYPES, Question } from "../constants/QuestionFactory";
 export default {
   data() {
     return {

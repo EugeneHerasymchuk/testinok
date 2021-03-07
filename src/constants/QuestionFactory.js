@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+
 export const QUESTION_TYPES = {
   CorrectOrder: "CorrectOrder",
   CrossOut: "CrossOut",
@@ -21,20 +23,29 @@ export const QUESTION_OPTIONS = [
   }
 ];
 
-export const QUESTION_META_FACTORY = {
-  [QUESTION_TYPES.RightOrder]: {
-    title: "This is a title for the right order"
-  }
+export const getNewQuestionMeta = (questionType) => {
+  const META = {
+    [QUESTION_TYPES.RightOrder]: {
+      id: "",
+      title: "Place words in the rigth order",
+      sentence: ""
+    }
+  };
+
+  return META[questionType];
 };
 
 export class Question {
-  questionType;
+  type;
   constructor(questionType, questionMeta) {
-    this.questionType = questionType;
+    this.type = questionType;
     if (questionMeta) {
-      this.questionMeta = questionMeta;
+      this.meta = questionMeta;
     } else {
-      this.questionMeta = QUESTION_META_FACTORY[questionType];
+      this.meta = getNewQuestionMeta(questionType);
+
+      this.meta.id = nanoid();
+      //TODO: create an ID for the question
     }
   }
 }
