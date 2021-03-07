@@ -82,7 +82,7 @@
                     <el-button
                       type="primary"
                       size="mini"
-                      @click="copyTestLink(this.testId)"
+                      @click="copyTestLink(testId)"
                     >
                       Copy link to test
                       <i class="student-code__icon el-icon-copy-document"></i>
