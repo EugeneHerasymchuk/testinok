@@ -1,0 +1,6 @@
+#import "./TestFragment.gql"
+mutation UpdateTest($id: uuid!, $deleteQuestionKey: String) {
+  update_Tests_by_pk(pk_columns: {id: $id}, _delete_key: {questions: $deleteQuestionKey}) {
+      ...Test
+  } 
+}

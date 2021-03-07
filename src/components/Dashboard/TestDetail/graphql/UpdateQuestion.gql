@@ -1,0 +1,6 @@
+#import "./TestFragment.gql"
+mutation UpdateTest($id: uuid!, $questions: jsonb) {
+  update_Tests_by_pk(pk_columns: {id: $id}, _append: { questions: $questions}) {
+      ...Test
+  } 
+}

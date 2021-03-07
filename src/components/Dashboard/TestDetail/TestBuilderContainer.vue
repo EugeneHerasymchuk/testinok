@@ -170,26 +170,136 @@
               </el-row>
             </el-collapse-item>
             <el-collapse-item title="Questions" name="2">
-              <QuestionFactoryContainer
-                v-if="editingMode"
-                @closeWithoutSaving="toggleEditingMode"
-                @saveQuestion="toggleEditingMode"
-              />
+              <ApolloMutation
+                :mutation="require('./graphql/UpdateQuestion.gql')"
+                :update="updateCacheAfterTogglePublish"
+                class="form"
+                @done="
+                  () => {
+                    $notify({
+                      message: `Done`,
+                      type: 'success',
+                    });
+                    toggleEditingMode();
+                  }
+                "
+                @error="
+                  (e) => {
+                    $notify({
+                      message: e,
+                      type: 'error',
+                    });
+                  }
+                "
+              >
+                <template slot-scope="{ mutate, loading }">
+                  <div v-if="loading">
+                    <i class="el-icon-loading"></i>
+                  </div>
 
-              <el-dropdown v-else @command="addNewQuestion">
-                <span class="el-dropdown-link">
-                  Add new question
-                  <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item :command="QUESTION_TYPES.RightOrder">
-                    Right Order in sentence
-                  </el-dropdown-item>
-                  <el-dropdown-item command="more" disabled>
-                    More coming...
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
+                  <div v-else-if="error">An error occurred during loading</div>
+
+                  <div v-else>
+                    <QuestionFactoryContainer
+                      v-if="editingMode"
+                      :questionPayload="questionPayload"
+                      @close-without-saving="toggleEditingMode"
+                      @save-question="
+                        (questions) => {
+                          mutate({ variables: { questions, id: testId } });
+                        }
+                      "
+                    />
+
+                    <div v-else>
+                      <el-dropdown @command="addNewQuestion">
+                        <el-button type="primary">
+                          Add new question
+                          <i class="el-icon-arrow-down el-icon--right"></i>
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                          <el-dropdown-item
+                            :command="QUESTION_TYPES.RightOrder"
+                          >
+                            Right Order in sentence
+                          </el-dropdown-item>
+                          <el-dropdown-item command="more" disabled>
+                            More coming...
+                          </el-dropdown-item>
+                        </el-dropdown-menu>
+                      </el-dropdown>
+
+                      <el-table
+                        :data="Object.values(data.Tests_by_pk.questions)"
+                        stripe
+                        style="width: 100%"
+                      >
+                        <el-table-column label="Question Title">
+                          <template slot-scope="scope">
+                            <span>{{ scope.row.meta.title }}</span>
+                          </template>
+                        </el-table-column>
+
+                        <el-table-column>
+                          <template slot-scope="scope">
+                            <el-button
+                              @click="editQuestion(scope.row)"
+                              icon="el-icon-edit"
+                              circle
+                            ></el-button>
+                          </template>
+                        </el-table-column>
+
+                        <el-table-column>
+                          <template slot-scope="scope">
+                            <ApolloMutation
+                              :mutation="
+                                require('./graphql/RemoveQuestion.gql')
+                              "
+                              class="form"
+                              :update="updateCacheAfterTogglePublish"
+                              @error="
+                                () => {
+                                  $notify({
+                                    message: 'Error occured',
+                                    type: 'error',
+                                  });
+                                }
+                              "
+                            >
+                              <template slot-scope="{ mutate }">
+                                <el-popconfirm
+                                  confirm-button-text="Delete"
+                                  cancel-button-text="No"
+                                  icon="el-icon-info"
+                                  icon-color="red"
+                                  title="Are you sure to delete this question?"
+                                  @confirm="
+                                    mutate({
+                                      variables: {
+                                        id: testId,
+                                        deleteQuestionKey: scope.row.meta.id,
+                                      },
+                                    })
+                                  "
+                                >
+                                  <el-button
+                                    size="mini"
+                                    slot="reference"
+                                    type="danger"
+                                    icon="el-icon-delete"
+                                    circle
+                                  ></el-button>
+                                </el-popconfirm>
+                              </template>
+                            </ApolloMutation>
+                          </template>
+                        </el-table-column>
+                      </el-table>
+                    </div>
+                  </div>
+                </template>
+              </ApolloMutation>
             </el-collapse-item>
           </el-collapse>
         </div>
@@ -235,6 +345,7 @@ export default {
 
         if (update_Tests_by_pk) {
           data.Tests_by_pk.is_published = update_Tests_by_pk.is_published;
+          data.Tests_by_pk.questions = update_Tests_by_pk.questions;
         }
 
         if (delete_Students_Tests && delete_Students_Tests.returning.length) {
@@ -261,10 +372,18 @@ export default {
         console.log(e);
       }
     },
-    addNewQuestion() {
-      this.toggleEditingMode();
+    addNewQuestion(questionType) {
+      this.questionPayload = {
+        type: questionType,
+      };
+      this.editingMode = true;
+    },
+    editQuestion(questionPayload) {
+      this.questionPayload = questionPayload;
+      this.editingMode = true;
     },
     toggleEditingMode() {
+      this.questionPayload = null;
       this.editingMode = !this.editingMode;
     },
   },
