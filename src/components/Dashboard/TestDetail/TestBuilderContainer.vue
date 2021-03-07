@@ -233,6 +233,7 @@
                         :data="Object.values(data.Tests_by_pk.questions)"
                         stripe
                         style="width: 100%"
+                        empty-text="Please, add questions to see it in the list"
                       >
                         <el-table-column label="Question Title">
                           <template slot-scope="scope">
