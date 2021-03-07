@@ -6,9 +6,7 @@
           :router="true"
           :default-active="this.$route.path"
           class="el-menu-vertical-demo"
-          @open="handleOpen"
           mode="horizontal"
-          @close="handleClose"
         >
           <el-menu-item index="/dashboard">
             <i class="el-icon-s-home"></i>
@@ -31,8 +29,6 @@
       </el-row>
     </el-header>
     <el-container>
-   
-        
       <el-container>
         <el-main><router-view></router-view></el-main>
       </el-container>
@@ -43,12 +39,6 @@
 export default {
   name: "DashboardContainer",
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    },
     login() {
       this.$auth.loginWithRedirect();
     },
