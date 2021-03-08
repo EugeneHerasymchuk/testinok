@@ -6,23 +6,22 @@
         <el-input
           v-model="question.meta.title"
           placeholder="Provide a title for the question"
+          clearable
         />
-
-        <!-- <component
-          :is="componentsMap[questionConfig.content.type].builder"
-          :questionConfig="questionConfig"
-          @saveAndPreview="currentTab = '1'"
-        ></component> -->
+        <component
+          v-if="currentTab === '0'"
+          :is="componentsMap[question.type].builder"
+          :questionConfig="question"
+        ></component>
       </el-tab-pane>
       <el-tab-pane :disabled="true">
         <span slot="label"><i class="el-icon-view"></i> Preview</span>
         {{ question.meta.title }}
-        <!-- <component
+        <component
           v-if="currentTab === '1'"
-          :is="componentsMap[questionConfig.content.type].preview"
-          :questionConfig="questionConfig"
-          @edit="currentTab = '0'"
-        ></component> -->
+          :is="componentsMap[question.type].preview"
+          :questionConfig="question"
+        ></component>
       </el-tab-pane>
     </el-tabs>
     <div class="buttons-group">
@@ -53,6 +52,10 @@
   </div>
 </template>
 <script>
+import { QUESTION_TYPES } from "../../../constants/QuestionFactory";
+import RightOrderBuilder from "../../Questions/RightOrder/RightOrderBuilder";
+import RightOrderPreview from "../../Questions/RightOrder/RightOrderPreview";
+
 export default {
   props: ["testId", "questionPayload"],
   name: "QuestionFactoryContainer",
@@ -64,6 +67,12 @@ export default {
       /* TODO: create new payload or copy the payload using Factory if editing mode here
       pass it inside the builder&preview components and use it inside them
       */
+      componentsMap: {
+        [QUESTION_TYPES.RightOrder]: {
+          builder: RightOrderBuilder,
+          preview: RightOrderPreview,
+        },
+      },
     };
   },
   created() {

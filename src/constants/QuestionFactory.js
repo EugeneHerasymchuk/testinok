@@ -10,24 +10,19 @@ export const QUESTION_TYPES = {
   RightOrder: "RightOrder"
 };
 
-export const QUESTION_OPTIONS = [
-  {
-    value: QUESTION_TYPES.CrossOut,
-    label: "Cross out the word in each group which does not ...",
-    icon: "el-icon-s-ticket"
-  },
-  {
-    value: QUESTION_TYPES.CorrectOrder,
-    label: "Write the words in the correct order ...",
-    icon: "el-icon-s-ticket"
-  }
-];
+// export const QUESTION_OPTIONS = [
+//   {
+//     value: QUESTION_TYPES.CrossOut,
+//     label: "Cross out the word in each group which does not ...",
+//     icon: "el-icon-s-ticket"
+//   }
+// ];
 
 export const getNewQuestionMeta = (questionType) => {
   const META = {
     [QUESTION_TYPES.RightOrder]: {
       id: "",
-      title: "Place words in the rigth order",
+      title: "Write the words in sentence in the correct order",
       sentence: ""
     }
   };
