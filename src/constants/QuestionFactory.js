@@ -35,7 +35,7 @@ export class Question {
   constructor(questionType, questionMeta) {
     this.type = questionType;
     if (questionMeta) {
-      this.meta = questionMeta;
+      this.meta = { ...questionMeta };
     } else {
       this.meta = getNewQuestionMeta(questionType);
 
