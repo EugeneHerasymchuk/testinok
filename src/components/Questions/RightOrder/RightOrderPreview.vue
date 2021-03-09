@@ -42,7 +42,10 @@ export default {
   },
   created() {
     this.arrayLine = [
-      ...this.questionConfig.meta.sentence.split(" ").map((x) => x.trim()),
+      ...this.questionConfig.meta.sentence
+        .split(" ")
+        .map((x) => x.trim())
+        .filter((x) => x.length),
     ].reverse();
   },
   methods: {
