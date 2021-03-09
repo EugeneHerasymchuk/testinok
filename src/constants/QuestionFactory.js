@@ -23,7 +23,9 @@ export const getNewQuestionMeta = (questionType) => {
     [QUESTION_TYPES.RightOrder]: {
       id: "",
       title: "Write the words in sentence in the correct order",
-      sentence: ""
+      sentence: "",
+      validate() {},
+      check() {}
     }
   };
 
@@ -35,12 +37,11 @@ export class Question {
   constructor(questionType, questionMeta) {
     this.type = questionType;
     if (questionMeta) {
-      this.meta = { ...questionMeta };
+      this.meta = { ...getNewQuestionMeta(questionType), ...questionMeta };
     } else {
       this.meta = getNewQuestionMeta(questionType);
 
       this.meta.id = nanoid();
-      //TODO: create an ID for the question
     }
   }
 }
