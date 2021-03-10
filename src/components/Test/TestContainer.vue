@@ -52,6 +52,19 @@
               <el-button @click="changeCode"> Change the code </el-button>
             </el-col>
           </el-row>
+          <el-row>
+            <el-col :span="12">
+              <div
+                v-for="(value, name) of data.Students[0].Students_Tests[0].Test.questions"
+                :key="name"
+              >
+                <component
+                  :is="componentsMap[value.type].preview"
+                  :questionConfig="value"
+                ></component>
+              </div>
+            </el-col>
+          </el-row>
         </div>
       </template>
     </ApolloQuery>

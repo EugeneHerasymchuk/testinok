@@ -67,10 +67,6 @@
   </div>
 </template>
 <script>
-import { QUESTION_TYPES } from "../../../constants/QuestionFactory";
-import RightOrderBuilder from "../../Questions/RightOrder/RightOrderBuilder";
-import RightOrderPreview from "../../Questions/RightOrder/RightOrderPreview";
-
 export default {
   props: ["testId", "questionPayload"],
   name: "QuestionFactoryContainer",
@@ -82,12 +78,6 @@ export default {
       /* TODO: create new payload or copy the payload using Factory if editing mode here
       pass it inside the builder&preview components and use it inside them
       */
-      componentsMap: {
-        [QUESTION_TYPES.RightOrder]: {
-          builder: RightOrderBuilder,
-          preview: RightOrderPreview,
-        },
-      },
     };
   },
   created() {

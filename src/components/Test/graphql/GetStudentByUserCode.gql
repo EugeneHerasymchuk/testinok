@@ -4,6 +4,7 @@ query GetStudentByUserCode ($user_code: String!) {
     Students_Tests {
       Test {
         title
+        questions
       }
     }
   }
