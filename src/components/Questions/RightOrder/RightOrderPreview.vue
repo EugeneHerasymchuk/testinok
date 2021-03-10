@@ -1,12 +1,12 @@
 <template>
   <div>
-    <el-row :gutter="20">
+    <el-row>
       <el-col :span="20"
         ><drop-list
-          :items="arrayLine"
+          :items="questionConfig.attempt.arrayLine"
           class="list"
           @insert="onInsert"
-          @reorder="$event.apply(arrayLine)"
+          @reorder="$event.apply(questionConfig.attempt.arrayLine)"
           :accepts-data="allowDropCurrentList"
         >
           <template v-slot:item="{ item }">
@@ -16,6 +16,13 @@
           </template>
         </drop-list></el-col
       >
+      <el-col :span="4">
+        <span>
+          <el-tag round :type="isQuestionValid ? 'success' : 'danger'">{{
+            isQuestionValid ? "Correct" : "Incorrect"
+          }}</el-tag>
+        </span>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -30,18 +37,12 @@ export default {
       type: Object,
     },
   },
-  data() {
-    return {
-      arrayLine: [],
-    };
-  },
-  computed: {},
   components: {
     Drag,
     DropList,
   },
   created() {
-    this.arrayLine = [
+    this.questionConfig.attempt.arrayLine = [
       ...this.questionConfig.meta.sentence
         .split(" ")
         .map((x) => x.trim())
@@ -50,10 +51,10 @@ export default {
   },
   methods: {
     allowDropCurrentList(d) {
-      return this.arrayLine.includes(d);
+      return this.questionConfig.attempt.arrayLine.includes(d);
     },
     onInsert(event) {
-      this.arrayLine.splice(event.index, 0, event.data);
+      this.questionConfig.attempt.arrayLine.splice(event.index, 0, event.data);
     },
   },
 };

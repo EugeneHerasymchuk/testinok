@@ -97,7 +97,12 @@ export default {
     },
     validateAndSave() {
       if (this.validateQuestion()) {
-        this.$emit("save-question", { [this.question.meta.id]: this.question });
+        this.$emit("save-question", {
+          [this.question.meta.id]: {
+            meta: this.question.meta,
+            type: this.question.type,
+          },
+        });
       }
     },
     validateQuestion() {

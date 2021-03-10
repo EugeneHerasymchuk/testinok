@@ -23,7 +23,7 @@ export default {
       questionLine: "",
       questionLineDefault: "Write the words in sentence in the correct order",
     };
-  }
+  },
 };
 </script>
 <style>

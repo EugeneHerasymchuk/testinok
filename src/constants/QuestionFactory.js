@@ -21,11 +21,18 @@ export const QUESTION_TYPES = {
 export const getNewQuestionMeta = (questionType) => {
   const META = {
     [QUESTION_TYPES.RightOrder]: {
-      id: "",
-      title: "Write the words in sentence in the correct order",
-      sentence: "",
+      meta: {
+        id: "",
+        title: "Write the words in sentence in the correct order",
+        sentence: ""
+      },
+      attempt: {
+        arrayLine: []
+      },
       validate() {},
-      check() {}
+      check() {
+        return this.attempt.arrayLine.join(" ") === this.meta.sentence;
+      }
     }
   };
 
@@ -34,12 +41,19 @@ export const getNewQuestionMeta = (questionType) => {
 
 export class Question {
   type;
+  attempt = {};
   constructor(questionType, questionMeta) {
     this.type = questionType;
+    const { meta, attempt, validate, check } = getNewQuestionMeta(questionType);
+
+    this.attempt = attempt;
+    this.validate = validate;
+    this.check = check;
+
     if (questionMeta) {
-      this.meta = { ...getNewQuestionMeta(questionType), ...questionMeta };
+      this.meta = { ...questionMeta };
     } else {
-      this.meta = getNewQuestionMeta(questionType);
+      this.meta = meta;
 
       this.meta.id = nanoid();
     }
