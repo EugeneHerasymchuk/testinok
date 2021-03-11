@@ -370,7 +370,10 @@ export default {
           data,
         });
       } catch (e) {
-        console.log(e);
+        this.$notify({
+          message: "Error occured during updating. Please contact support",
+          type: "error",
+        });
       }
     },
     addNewQuestion(questionType) {

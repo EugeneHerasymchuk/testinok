@@ -3,16 +3,31 @@
     <el-tabs v-model="currentTab" type="border-card">
       <el-tab-pane>
         <span slot="label"><i class="el-icon-setting"></i> Create</span>
-        <el-input
-          v-model="question.meta.title"
-          placeholder="Provide a title for the question"
-          clearable
-        />
-        <component
-          v-if="currentTab === '0'"
-          :is="componentsMap[question.type].builder"
-          :questionConfig="question"
-        ></component>
+        <el-form
+          :model="question"
+          :rules="questionForm.rules"
+          :ref="questionForm.name"
+        >
+          <el-form-item
+            label="Question title"
+            prop="meta.title"
+            :rules="{
+              required: true,
+              message: 'Please provide title of the question',
+              trigger: 'change',
+            }"
+          >
+            <el-input v-model="question.meta.title" clearable />
+          </el-form-item>
+
+          <el-form-item prop="meta">
+            <component
+              v-if="currentTab === '0'"
+              :is="componentsMap[question.type].builder"
+              :questionConfig="question"
+            ></component>
+          </el-form-item>
+        </el-form>
       </el-tab-pane>
       <el-tab-pane :disabled="true">
         <span slot="label"><i class="el-icon-view"></i> Preview</span>
@@ -50,7 +65,11 @@
           type="primary"
           plain
           round
-          @click="validateAndPreview"
+          @click="
+            () => {
+              validateAndPreview();
+            }
+          "
         >
           Preview
         </el-button>
@@ -78,6 +97,10 @@ export default {
       /* TODO: create new payload or copy the payload using Factory if editing mode here
       pass it inside the builder&preview components and use it inside them
       */
+      questionForm: {
+        name: "factoryQuestionForm",
+        rules: {},
+      },
     };
   },
   created() {
@@ -85,18 +108,25 @@ export default {
       this.questionPayload.type,
       this.questionPayload.meta
     );
+
+    this.questionForm.rules["meta"] = [
+      {
+        validator: this.question.validate,
+        trigger: "change",
+      },
+    ];
   },
   methods: {
-    validateAndPreview() {
-      if (this.validateQuestion()) {
+    async validateAndPreview() {
+      if (await this.validateFactoryForm()) {
         this.currentTab = "1";
       }
     },
     editQuestion() {
       this.currentTab = "0";
     },
-    validateAndSave() {
-      if (this.validateQuestion()) {
+    async validateAndSave() {
+      if (await this.validateFactoryForm()) {
         this.$emit("save-question", {
           [this.question.meta.id]: {
             meta: this.question.meta,
@@ -105,8 +135,13 @@ export default {
         });
       }
     },
-    validateQuestion() {
-      return this.question.meta.title.length;
+    async validateFactoryForm() {
+      try {
+        await this.$refs[this.questionForm.name].validate();
+        return true;
+      } catch (e) {
+        return false;
+      }
     },
   },
 };
