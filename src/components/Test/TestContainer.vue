@@ -30,7 +30,7 @@
               <el-table :data="data.Students" stripe style="width: 100%">
                 <el-table-column label="Name">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.first_name }}</span>
+                    <span>{{ scope.row.first_name }} {{ scope.row.last_name || '' }}</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -50,19 +50,6 @@
             </el-col>
             <el-col :span="12">
               <el-button @click="changeCode"> Change the code </el-button>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <div
-                v-for="(value, name) of data.Students[0].Students_Tests[0].Test.questions"
-                :key="name"
-              >
-                <component
-                  :is="componentsMap[value.type].preview"
-                  :questionConfig="value"
-                ></component>
-              </div>
             </el-col>
           </el-row>
         </div>
