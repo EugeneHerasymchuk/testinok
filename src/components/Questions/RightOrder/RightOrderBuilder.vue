@@ -5,7 +5,7 @@
       type="text"
       placeholder="Type sentence in correct order ( required )"
       v-model="questionConfig.meta.sentence"
-      @change="(value) => (questionConfig.meta.sentence = value.trim())"
+      @change="onSentenceChange"
       clearable
     >
     </el-input>
@@ -18,6 +18,15 @@ export default {
     questionConfig: {
       required: true,
       type: Object,
+    },
+  },
+  methods: {
+    onSentenceChange(value) {
+      this.questionConfig.meta.sentence = value
+        .split(" ")
+        .map((x) => x.trim())
+        .filter((x) => x.length)
+        .join(" ");
     },
   },
 };
