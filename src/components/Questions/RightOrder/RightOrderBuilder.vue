@@ -2,8 +2,10 @@
   <div>
     <el-input
       class="question"
+      type="text"
       placeholder="Type sentence in correct order ( required )"
       v-model="questionConfig.meta.sentence"
+      @change="(value) => (questionConfig.meta.sentence = value.trim())"
       clearable
     >
     </el-input>
@@ -17,12 +19,6 @@ export default {
       required: true,
       type: Object,
     },
-  },
-  data() {
-    return {
-      questionLine: "",
-      questionLineDefault: "Write the words in sentence in the correct order",
-    };
   },
 };
 </script>

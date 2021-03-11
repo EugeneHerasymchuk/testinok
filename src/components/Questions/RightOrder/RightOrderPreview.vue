@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="20"
-        ><drop-list
+      <el-col :span="20">
+        <drop-list
           :items="questionConfig.attempt.arrayLine"
           class="list"
           @insert="onInsert"
@@ -14,12 +14,12 @@
               <el-tag>{{ item }}</el-tag>
             </drag>
           </template>
-        </drop-list></el-col
-      >
+        </drop-list>
+      </el-col>
       <el-col :span="4">
         <span>
-          <el-tag round :type="isQuestionValid ? 'success' : 'danger'">{{
-            isQuestionValid ? "Correct" : "Incorrect"
+          <el-tag round :type="isAttemptCorrect ? 'success' : 'danger'">{{
+            isAttemptCorrect ? "Correct" : "Incorrect"
           }}</el-tag>
         </span>
       </el-col>
