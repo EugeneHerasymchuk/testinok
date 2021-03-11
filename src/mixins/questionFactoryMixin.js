@@ -20,8 +20,11 @@ export default {
     };
   },
   computed: {
-    isQuestionValid() {
+    isAttemptCorrect() {
       return this.questionConfig.check();
+    },
+    isQuestionValid() {
+      return this.questionConfig.validate();
     }
   },
   methods: {

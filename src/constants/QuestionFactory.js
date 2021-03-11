@@ -29,7 +29,19 @@ export const getNewQuestionMeta = (questionType) => {
       attempt: {
         arrayLine: []
       },
-      validate() {},
+      validate(rule, { sentence } /* meta object */, callback) {
+        const res =
+          sentence
+            .split(" ")
+            .map((x) => x.trim())
+            .filter((x) => x.length).length > 1;
+
+        if (!res) {
+          callback(new Error("Please add at least two words for the sentence"));
+        } else {
+          callback();
+        }
+      },
       check() {
         return this.attempt.arrayLine.join(" ") === this.meta.sentence;
       }
