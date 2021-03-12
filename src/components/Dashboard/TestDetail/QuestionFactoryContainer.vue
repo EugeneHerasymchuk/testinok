@@ -34,6 +34,11 @@
         <el-row type="flex" class="text-left">
           <el-col>
             <span>
+              <el-tag round :type="isAttemptCorrect ? 'success' : 'danger'">{{
+                isAttemptCorrect ? "Correct" : "Incorrect"
+              }}</el-tag>
+            </span>
+            <span>
               <i class="el-icon-question"></i>
               {{ question.meta.title }}
             </span>
@@ -103,6 +108,14 @@ export default {
       },
     };
   },
+  computed: {
+    isAttemptCorrect() {
+      return this.question.check();
+    },
+    isQuestionValid() {
+      return this.question.validate();
+    },
+  },
   created() {
     this.question = this.newQuestion(
       this.questionPayload.type,
@@ -149,5 +162,8 @@ export default {
 <style scoped>
 .buttons-group {
   margin-top: 1rem;
+}
+.el-icon-question {
+  margin-left: 1rem;
 }
 </style>

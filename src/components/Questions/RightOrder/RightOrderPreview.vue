@@ -16,13 +16,6 @@
           </template>
         </drop-list>
       </el-col>
-      <el-col :span="4">
-        <span>
-          <el-tag round :type="isAttemptCorrect ? 'success' : 'danger'">{{
-            isAttemptCorrect ? "Correct" : "Incorrect"
-          }}</el-tag>
-        </span>
-      </el-col>
     </el-row>
   </div>
 </template>

@@ -19,14 +19,6 @@ export default {
       }
     };
   },
-  computed: {
-    isAttemptCorrect() {
-      return this.questionConfig.check();
-    },
-    isQuestionValid() {
-      return this.questionConfig.validate();
-    }
-  },
   methods: {
     newQuestion(questionType, questionMeta) {
       return new Question(questionType, questionMeta);

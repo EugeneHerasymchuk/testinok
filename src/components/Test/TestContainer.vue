@@ -16,13 +16,20 @@
         user_code: userCode,
       }"
       clientId="student"
+      @error="
+        () => {
+          codeProvided = false;
+          $notify({
+            message: 'Error occured. Please try again',
+            type: 'error',
+          });
+        }
+      "
     >
-      <template v-slot="{ result: { error, data }, isLoading }">
+      <template v-slot="{ result: { data }, isLoading }">
         <div v-if="isLoading">
           <i class="el-icon-loading"></i>
         </div>
-
-        <div v-else-if="error">An error occurred during loading</div>
 
         <div v-else-if="data && data.Students.length">
           <el-row>
@@ -30,7 +37,10 @@
               <el-table :data="data.Students" stripe style="width: 100%">
                 <el-table-column label="Name">
                   <template slot-scope="scope">
-                    <span>{{ scope.row.first_name }} {{ scope.row.last_name || '' }}</span>
+                    <span
+                      >{{ scope.row.first_name }}
+                      {{ scope.row.last_name || "" }}</span
+                    >
                   </template>
                 </el-table-column>
               </el-table>
