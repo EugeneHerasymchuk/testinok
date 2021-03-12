@@ -1,78 +1,59 @@
 <template>
-  <div>
-    <div v-if="!codeProvided">
-      Please provide your userCode
-      <el-input v-model="userCode" placeholder="Code..." />
+  <el-row type="flex" align="middle" justify="center" class="test-container">
+    <el-col :span="12">
+      <div v-if="!codeProvided">
+        Please provide your userCode
+        <el-input v-model="userCode" placeholder="Code..." />
 
-      <el-button :disabled="userCode.length < 3" @click="provideCode">
-        Enter a code
-      </el-button>
-    </div>
+        <el-button :disabled="userCode.length < 3" @click="provideCode">
+          Enter a code
+        </el-button>
+      </div>
 
-    <ApolloQuery
-      v-else
-      :query="require('./graphql/GetStudentByUserCode.gql')"
-      :variables="{
-        user_code: userCode,
-      }"
-      clientId="student"
-      @error="
-        () => {
-          codeProvided = false;
-          $notify({
-            message: 'Error occured. Please try again',
-            type: 'error',
-          });
-        }
-      "
-    >
-      <template v-slot="{ result: { data }, isLoading }">
-        <div v-if="isLoading">
-          <i class="el-icon-loading"></i>
-        </div>
+      <ApolloQuery
+        v-else
+        :query="require('./graphql/GetStudentByUserCode.gql')"
+        :variables="{
+          user_code: userCode,
+        }"
+        clientId="student"
+        @error="
+          () => {
+            codeProvided = false;
+            $notify({
+              message: 'Error occured. Please try again',
+              type: 'error',
+            });
+          }
+        "
+      >
+        <template v-slot="{ result: { data }, isLoading }">
+          <div v-if="isLoading">
+            <i class="el-icon-loading"></i>
+          </div>
 
-        <div v-else-if="data && data.Students.length">
-          <el-row>
-            <el-col :span="12">
-              <el-table :data="data.Students" stripe style="width: 100%">
-                <el-table-column label="Name">
-                  <template slot-scope="scope">
-                    <span
-                      >{{ scope.row.first_name }}
-                      {{ scope.row.last_name || "" }}</span
-                    >
-                  </template>
-                </el-table-column>
-              </el-table>
-
-              <el-table
-                v-if="data.Students[0].Students_Tests.length"
-                :data="data.Students[0].Students_Tests"
-                stripe
-                style="width: 100%"
-              >
-                <el-table-column label="Test title">
-                  <template slot-scope="scope">
-                    <span>{{ scope.row.Test.title }}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-col>
-            <el-col :span="12">
-              <el-button @click="changeCode"> Change the code </el-button>
-            </el-col>
-          </el-row>
-        </div>
-      </template>
-    </ApolloQuery>
-  </div>
+          <QuestionIterator
+            v-else-if="
+              data &&
+              data.Students.length &&
+              data.Students[0].Students_Tests[0].Test.questions
+            "
+            :questionsMap="data.Students[0].Students_Tests[0].Test.questions"
+          />
+        </template>
+      </ApolloQuery>
+    </el-col>
+  </el-row>
 </template>
 <script>
 import { HASURA_CODE_HEADER } from "../../constants/hasura.constants";
-
+import QuestionIterator from "./QuestionIterator.vue";
 export default {
   props: ["testId"],
   name: "TestContainer",
+  components: {
+    QuestionIterator,
+  },
   data() {
     return {
       userCode: "",
@@ -99,3 +80,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.test-container {
+  height: 80vh;
+}
+</style>
