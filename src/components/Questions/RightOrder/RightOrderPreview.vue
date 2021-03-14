@@ -10,7 +10,7 @@
           :accepts-data="allowDropCurrentList"
         >
           <template v-slot:item="{ item }">
-            <drag class="item" :key="item">
+            <drag class="item" :key="item + Math.random()">
               <el-tag>{{ item }}</el-tag>
             </drag>
           </template>
@@ -53,10 +53,6 @@ export default {
 };
 </script>
 <style scoped>
-.preview-container {
-  text-align: left;
-}
-
 .drop-in {
   box-shadow: 0 0 10px rgba(0, 0, 255, 0.3);
 }
