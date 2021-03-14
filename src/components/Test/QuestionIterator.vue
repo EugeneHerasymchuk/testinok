@@ -24,7 +24,13 @@
     </el-pagination>
     <el-divider></el-divider>
 
-    <el-button size="mini" type="success" plain round @click="checkAll"
+    <el-button
+      class="iterator__button"
+      size="mini"
+      type="success"
+      plain
+      round
+      @click="checkAll"
       >Finish test and check results</el-button
     >
     <el-card v-if="attempt" class="iterator__result">
@@ -96,4 +102,7 @@ export default {
 };
 </script>
 <style scoped>
+.iterator__button {
+  margin-bottom: 1rem;
+}
 </style>
