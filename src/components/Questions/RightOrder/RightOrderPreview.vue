@@ -10,7 +10,7 @@
           :accepts-data="allowDropCurrentList"
         >
           <template v-slot:item="{ item }">
-            <drag class="item" :key="item + Math.random()">
+            <drag class="item" :key="item">
               <el-tag>{{ item }}</el-tag>
             </drag>
           </template>
