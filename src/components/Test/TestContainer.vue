@@ -2,10 +2,14 @@
   <el-row type="flex" align="middle" justify="center" class="test-container">
     <el-col :span="12">
       <div v-if="!codeProvided">
-        Please provide your userCode
+        Please provide your Student Code
         <el-input v-model="userCode" placeholder="Code..." />
 
-        <el-button :disabled="userCode.length < 3" @click="provideCode">
+        <el-button
+          class="test-container__code-button"
+          :disabled="userCode.length < 3"
+          @click="provideCode"
+        >
           Enter a code
         </el-button>
       </div>
@@ -21,7 +25,7 @@
           () => {
             codeProvided = false;
             $notify({
-              message: 'Error occured. Please try again',
+              message: 'Error occured. Please contact your teacher',
               type: 'error',
             });
           }
@@ -36,10 +40,28 @@
             v-else-if="
               data &&
               data.Students.length &&
-              data.Students[0].Students_Tests[0].Test.questions
+              data.Students[0].Students_Tests.length
             "
             :questionsMap="data.Students[0].Students_Tests[0].Test.questions"
           />
+
+          <div v-else-if="data && !data.Students.length">
+            Wrong Student code
+            <el-button type="text" @click="codeProvided = false"
+              >Change the code</el-button
+            >
+          </div>
+
+          <div
+            v-else-if="
+              data &&
+              data.Students.length &&
+              !data.Students[0].Students_Tests.length
+            "
+          >
+            {{ data.Students[0].first_name }} {{ data.Students[0].last_name }},
+            please contact a teacher to assign you to a test
+          </div>
         </template>
       </ApolloQuery>
     </el-col>
@@ -83,5 +105,9 @@ export default {
 <style scoped>
 .test-container {
   height: 80vh;
+}
+
+.test-container__code-button {
+  margin-top: 1rem;
 }
 </style>
