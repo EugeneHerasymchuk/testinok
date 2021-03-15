@@ -9,14 +9,14 @@
           @reorder="$event.apply(questionConfig.attempt.arrayLine)"
           :accepts-data="allowDropCurrentList"
         >
-          <template v-slot:item="{ item }">
+          <template v-slot:item="{ item, reorder }">
             <drag class="item" :key="item + Math.random()">
-              <el-tag>{{ item }}</el-tag>
+              <el-tag :type="reorder ? 'success' : ''">{{ item }}</el-tag>
             </drag>
           </template>
 
           <template v-slot:feedback="{ data }">
-            <div class="item feedback" :key="data + Math.random()">{{ data }}</div>
+            <el-tag :key="item + Math.random()">{{ data }}</el-tag>
           </template>
         </drop-list>
       </el-col>
