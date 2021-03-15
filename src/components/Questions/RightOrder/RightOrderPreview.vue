@@ -16,7 +16,7 @@
           </template>
 
           <template v-slot:feedback="{ data }">
-            <el-tag :key="item + Math.random()">{{ data }}</el-tag>
+            <el-tag :key="data">{{ data }}</el-tag>
           </template>
         </drop-list>
       </el-col>
