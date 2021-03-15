@@ -1,6 +1,24 @@
 <template>
   <div>
-    <el-row>
+    <div class="wrapper">
+      <drop-list
+        :items="questionConfig.attempt.arrayLine"
+        class="list"
+        @insert="onInsert"
+        @reorder="$event.apply(questionConfig.attempt.arrayLine)"
+        :accepts-data="allowDropCurrentList"
+      >
+        <template v-slot:item="{ item, reorder }">
+          <drag class="item" :key="item.key">
+            <el-tag :type="reorder ? 'success' : ''">{{ item.value }}</el-tag>
+          </drag>
+        </template>
+        <template v-slot:feedback="{ data }">
+          <div class="item feedback" :key="data.key">{{ data.value }}</div>
+        </template>
+      </drop-list>
+    </div>
+    <!-- <el-row>
       <el-col :span="20">
         <drop-list
           :items="questionConfig.attempt.arrayLine"
@@ -20,7 +38,7 @@
           </template>
         </drop-list>
       </el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 <script>
@@ -43,7 +61,8 @@ export default {
       ...this.questionConfig.meta.sentence
         .split(" ")
         .map((x) => x.trim())
-        .filter((x) => x.length),
+        .filter((x) => x.length)
+        .map((x, i) => ({ value: x, key: i })),
     ].reverse();
   },
   methods: {

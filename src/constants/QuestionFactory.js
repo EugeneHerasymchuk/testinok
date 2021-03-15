@@ -43,7 +43,11 @@ export const getNewQuestionMeta = (questionType) => {
         }
       },
       check() {
-        return this.attempt.arrayLine.join(" ") === this.meta.sentence;
+        return (
+          this.attempt.arrayLine
+            .map((resultWord) => resultWord.value)
+            .join(" ") === this.meta.sentence
+        );
       }
     }
   };
