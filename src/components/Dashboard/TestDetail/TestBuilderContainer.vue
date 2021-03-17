@@ -223,6 +223,9 @@
                           >
                             Right Order in sentence
                           </el-dropdown-item>
+                          <el-dropdown-item :command="QUESTION_TYPES.CrossOut">
+                            Cross out word
+                          </el-dropdown-item>
                           <el-dropdown-item command="more" disabled>
                             More coming...
                           </el-dropdown-item>

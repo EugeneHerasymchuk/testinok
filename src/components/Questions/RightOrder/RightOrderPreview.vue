@@ -18,27 +18,6 @@
         </template>
       </drop-list>
     </div>
-    <!-- <el-row>
-      <el-col :span="20">
-        <drop-list
-          :items="questionConfig.attempt.arrayLine"
-          class="list"
-          @insert="onInsert"
-          @reorder="$event.apply(questionConfig.attempt.arrayLine)"
-          :accepts-data="allowDropCurrentList"
-        >
-          <template v-slot:item="{ item, reorder }">
-            <drag class="item" :key="item + Math.random()">
-              <el-tag :type="reorder ? 'success' : ''">{{ item }}</el-tag>
-            </drag>
-          </template>
-
-          <template v-slot:feedback="{ data }">
-            <el-tag :key="data">{{ data }}</el-tag>
-          </template>
-        </drop-list>
-      </el-col>
-    </el-row> -->
   </div>
 </template>
 <script>
@@ -76,10 +55,6 @@ export default {
 };
 </script>
 <style scoped>
-.drop-in {
-  box-shadow: 0 0 10px rgba(0, 0, 255, 0.3);
-}
-
 .list {
   display: flex;
   flex-wrap: wrap;

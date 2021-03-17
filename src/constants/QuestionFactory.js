@@ -49,6 +49,31 @@ export const getNewQuestionMeta = (questionType) => {
             .join(" ") === this.meta.sentence
         );
       }
+    },
+    [QUESTION_TYPES.CrossOut]: {
+      meta: {
+        id: "",
+        title: "Cross out the word that does not fit the group...",
+        list: [],
+        selection: ""
+      },
+      attempt: {
+        selection: ""
+      },
+      validate(rule, { list, selection } /* meta object */, callback) {
+        const res = list.length > 1;
+
+        if (!res) {
+          callback(new Error("Please add at least two words for the list"));
+        } else if (!selection) {
+          callback(new Error("Please select the correct answer"));
+        } else {
+          callback();
+        }
+      },
+      check() {
+        return this.meta.selection === this.attempt.selection;
+      }
     }
   };
 

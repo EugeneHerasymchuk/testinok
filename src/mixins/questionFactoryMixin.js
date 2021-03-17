@@ -5,6 +5,8 @@ import {
 } from "../constants/QuestionFactory";
 import RightOrderBuilder from "../components/Questions/RightOrder/RightOrderBuilder";
 import RightOrderPreview from "../components/Questions/RightOrder/RightOrderPreview";
+import CrossOutBuilder from "../components/Questions/CrossOut/CrossOutBuilder";
+import CrossOutPreview from "../components/Questions/CrossOut/CrossOutPreview";
 
 export default {
   data() {
@@ -15,6 +17,10 @@ export default {
         [QUESTION_TYPES.RightOrder]: {
           builder: RightOrderBuilder,
           preview: RightOrderPreview
+        },
+        [QUESTION_TYPES.CrossOut]: {
+          builder: CrossOutBuilder,
+          preview: CrossOutPreview
         }
       }
     };
