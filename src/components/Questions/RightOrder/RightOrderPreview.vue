@@ -36,13 +36,11 @@ export default {
     DropList,
   },
   created() {
-    this.questionConfig.attempt.arrayLine = [
+    this.questionConfig.attempt.arrayLine = this.shuffleArray([
       ...this.questionConfig.meta.sentence
         .split(" ")
-        .map((x) => x.trim())
-        .filter((x) => x.length)
         .map((x, i) => ({ value: x, key: i })),
-    ].reverse();
+    ]);
   },
   methods: {
     allowDropCurrentList(d) {
@@ -50,6 +48,13 @@ export default {
     },
     onInsert(event) {
       this.questionConfig.attempt.arrayLine.splice(event.index, 0, event.data);
+    },
+    shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; --i) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
     },
   },
 };
