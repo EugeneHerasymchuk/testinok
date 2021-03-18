@@ -125,7 +125,7 @@ export default {
     this.questionForm.rules["meta"] = [
       {
         validator: this.question.validate,
-        trigger: "change",
+        trigger: 'broken',
       },
     ];
   },

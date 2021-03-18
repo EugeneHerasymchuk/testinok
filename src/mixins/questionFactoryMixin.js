@@ -1,5 +1,4 @@
 import {
-  QUESTION_OPTIONS,
   QUESTION_TYPES,
   Question
 } from "../constants/QuestionFactory";
@@ -11,7 +10,6 @@ import CrossOutPreview from "../components/Questions/CrossOut/CrossOutPreview";
 export default {
   data() {
     return {
-      QUESTION_OPTIONS: QUESTION_OPTIONS,
       QUESTION_TYPES: QUESTION_TYPES,
       componentsMap: {
         [QUESTION_TYPES.RightOrder]: {
