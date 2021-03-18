@@ -33,28 +33,33 @@
       @click="checkAll"
       >Finish test and check results</el-button
     >
-    <el-card v-if="attempt" class="iterator__result">
-      <div slot="header" class="clearfix">
-        <span>Test results {{ attempt.resultScore }}</span>
-        <el-button
-          style="float: right; padding: 3px 0"
-          type="text"
-          @click="attempt = null"
-        >
-          Clear
-        </el-button>
+    <el-drawer
+      :visible.sync="showResults"
+      custom-class="test-result"
+      direction="btt"
+      size="40%"
+      :before-close="
+        () => {
+          showResults = false;
+          attempt = null;
+        }
+      "
+    >
+      <div v-if="attempt">
+        <div v-for="(question, index) in attempt.questions" :key="index">
+          {{ "Question Nr" + question.orderNumber }}
+          <el-tag
+            size="mini"
+            round
+            :type="!!question.result ? 'success' : 'danger'"
+          >
+            {{ !!question.result ? "Correct" : "Incorrect" }}
+          </el-tag>
+        </div>
+        <el-divider></el-divider>
+        <span>{{ `Total results ${attempt.resultScore}` }}</span>
       </div>
-      <div v-for="(question, index) in attempt.questions" :key="index">
-        {{ "Question Nr" + question.orderNumber }}
-        <el-tag
-          size="mini"
-          round
-          :type="!!question.result ? 'success' : 'danger'"
-        >
-          {{ !!question.result ? "Correct" : "Incorrect" }}
-        </el-tag>
-      </div>
-    </el-card>
+    </el-drawer>
   </div>
 </template>
 <script>
@@ -67,6 +72,7 @@ export default {
       currentQuestionI: 1,
       question: null,
       attempt: null,
+      showResults: false,
     };
   },
   computed: {
@@ -97,12 +103,17 @@ export default {
       }, 0);
 
       this.attempt.resultScore = result;
+
+      this.showResults = true;
     },
   },
 };
 </script>
-<style scoped>
-.iterator__button {
-  margin-bottom: 1rem;
-}
+
+<style lang="sass">
+.test-result > .el-drawer__body
+  overflow: auto
+
+.iterator__button
+  margin-bottom: 1rem
 </style>

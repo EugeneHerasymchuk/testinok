@@ -13,18 +13,22 @@
       </el-tag>
     </el-radio>
 
-    <el-input
-      class="input input-new-tag"
-      v-if="inputVisible"
-      v-model="inputValue"
-      size="mini"
-      @keyup.enter.native="handleInputConfirm"
-      @blur="handleInputConfirm"
-    >
-    </el-input>
-    <el-button v-else class="button-new-tag" size="small" @click="showInput"
-      >+ New Tag</el-button
-    >
+    <div class="crossout-builder__new">
+      <el-input
+        ref="optionInput"
+        class="input input-new-tag"
+        v-if="inputVisible"
+        v-model="inputValue"
+        size="mini"
+        @keyup.enter.native="handleInputConfirm"
+        @blur="handleInputConfirm"
+        placeholder="Type option and click Enter to add ( or click outside of the field )"
+      >
+      </el-input>
+      <el-button v-else class="button-new-tag" size="small" @click="showInput">
+        + New Option
+      </el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -44,6 +48,8 @@ export default {
   },
   methods: {
     handleClose(tag) {
+      this.questionConfig.meta.selection = "";
+
       this.questionConfig.meta.list.splice(
         this.questionConfig.meta.list.indexOf(tag),
         1
@@ -52,6 +58,7 @@ export default {
 
     showInput() {
       this.inputVisible = true;
+      this.$nextTick(() => this.$refs.optionInput.focus());
     },
 
     handleInputConfirm() {
@@ -73,8 +80,11 @@ export default {
   },
 };
 </script>
-<style scoped>
-.crossout-builder__tag {
-  padding: 3px;
-}
+<style lang="sass" scoped>
+.crossout-builder
+  &__tag
+    padding: 3px
+
+  &__new
+    margin-top: 1rem
 </style>
