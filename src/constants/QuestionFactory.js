@@ -1,13 +1,12 @@
 import { nanoid } from "nanoid";
 
 export const QUESTION_TYPES = {
-  CorrectOrder: "CorrectOrder",
+  RightOrder: "RightOrder",
   CrossOut: "CrossOut",
   TextMatching: "TextMatching",
-  PictureMatching: "PictureMatching",
-  SingleChoice: "SingleChoice",
-  MultipleChoice: "MultipleChoice",
-  RightOrder: "RightOrder"
+  // PictureMatching: "PictureMatching",
+  // SingleChoice: "SingleChoice",
+  // MultipleChoice: "MultipleChoice",
 };
 
 // export const QUESTION_OPTIONS = [
@@ -73,6 +72,29 @@ export const getNewQuestionMeta = (questionType) => {
       },
       check() {
         return this.meta.selection === this.attempt.selection;
+      }
+    },
+    [QUESTION_TYPES.TextMatching]: {
+      meta: {
+        id: "",
+        title: "Cross out the word that does not fit the group...",
+        list: []
+      },
+      attempt: {
+        list: []
+      },
+      validate(rule, { list } /* meta object */, callback) {
+        const res = list.length > 1;
+
+        if (!res) {
+          callback(new Error("Please add at least two options for the list"));
+        } else {
+          callback();
+        }
+      },
+      check() {
+        // TODO: Compare two arrays
+        return this.meta.list === this.attempt.list;
       }
     }
   };
