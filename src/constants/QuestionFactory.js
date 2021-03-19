@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 export const QUESTION_TYPES = {
   RightOrder: "RightOrder",
   CrossOut: "CrossOut",
-  TextMatching: "TextMatching",
+  TextMatching: "TextMatching"
   // PictureMatching: "PictureMatching",
   // SingleChoice: "SingleChoice",
   // MultipleChoice: "MultipleChoice",
@@ -93,8 +93,14 @@ export const getNewQuestionMeta = (questionType) => {
         }
       },
       check() {
-        // TODO: Compare two arrays
-        return this.meta.list === this.attempt.list;
+        return this.meta.list.every(
+          ({ option, matching }) =>
+            (
+              this.attempt.list.find(
+                (attemptGroup) => attemptGroup.option === option
+              ) || {}
+            ).matching === matching
+        );
       }
     }
   };

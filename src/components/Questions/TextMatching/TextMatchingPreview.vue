@@ -5,17 +5,17 @@
       v-for="(matchingGroup, index) in questionConfig.attempt.list"
       :key="index"
     >
-      <el-tag effect="plain">{{ matchingGroup.first }}</el-tag>
+      <el-tag effect="plain">{{ matchingGroup.option }}</el-tag>
       <drop
         :class="{
           'textmatching-preview__list-item-drop': true,
-          'textmatching-preview__list-item-drop--empty': !matchingGroup.second,
+          'textmatching-preview__list-item-drop--empty': !matchingGroup.matching,
         }"
-        @drop="(e) => (matchingGroup.second = e.data)"
+        @drop="({ data }) => dropMatchingFromBucket(data, matchingGroup)"
       >
         <el-tag type="warning" effect="plain">
-          <i v-if="!matchingGroup.second" class="el-icon-full-screen"></i>
-          {{ matchingGroup.second }}
+          <i v-if="!matchingGroup.matching" class="el-icon-full-screen"></i>
+          {{ matchingGroup.matching }}
         </el-tag>
       </drop>
     </div>
@@ -25,11 +25,6 @@
         <drag
           :key="index"
           :data="bucketItem.value"
-          @copy="
-            () => {
-              bucketItem.used = true;
-            }
-          "
         >
           <el-tag :type="!bucketItem.used ? 'success' : 'info'" effect="plain">
             {{ bucketItem.value }}
@@ -64,8 +59,8 @@ export default {
       ...this.questionConfig.meta.list.map(({ option, matching }) => {
         this.textMatchingSelection.push({ value: matching, used: false });
         return {
-          first: option,
-          second: null,
+          option: option,
+          matching: null,
         };
       }),
     ];
@@ -73,7 +68,19 @@ export default {
     this.textMatchingSelection = this.shuffleArray(this.textMatchingSelection);
   },
   methods: {
-    useBucketItem() {},
+    dropMatchingFromBucket(data, matchingGroup) {
+      matchingGroup.matching = data;
+      this.refreshUsedBucketItems();
+    },
+    refreshUsedBucketItems() {
+      this.textMatchingSelection.forEach((matchingGroupBucket) => {
+        matchingGroupBucket.used = this.questionConfig.attempt.list.find(
+          ({ matching }) => matching === matchingGroupBucket.value
+        )
+          ? true
+          : false;
+      });
+    },
     onInsert(event) {
       this.questionConfig.attempt.arrayLine.splice(event.index, 0, event.data);
     },
