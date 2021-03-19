@@ -23,7 +23,7 @@
         :model="inputForm.form"
         :rules="inputForm.rules"
       >
-        <el-form-item prop="option">
+        <el-form-item prop="option" :show-message="false">
           <el-input
             size="medium"
             ref="optionInput"
@@ -33,7 +33,7 @@
             @blur="handleInputConfirm"
             @keypress.enter.native="handleInputConfirm"
         /></el-form-item>
-        <el-form-item prop="matching">
+        <el-form-item prop="matching" :show-message="false">
           <el-input
             size="medium"
             class="input input-new-tag"
