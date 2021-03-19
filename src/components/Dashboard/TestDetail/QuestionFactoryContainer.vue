@@ -25,6 +25,7 @@
               v-if="currentTab === '0'"
               :is="componentsMap[question.type].builder"
               :questionConfig="question"
+              :parentForm="this.$refs[this.questionForm.name]"
             ></component>
           </el-form-item>
         </el-form>
@@ -49,6 +50,7 @@
           v-if="currentTab === '1'"
           :is="componentsMap[question.type].preview"
           :questionConfig="question"
+          :parentForm="this.$refs[this.questionForm.name]"
         ></component>
         <el-divider></el-divider>
       </el-tab-pane>

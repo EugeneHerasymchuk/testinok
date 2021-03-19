@@ -67,6 +67,10 @@ export default {
       required: true,
       type: Object,
     },
+    parentForm: {
+      required: true,
+      type: Object,
+    },
   },
   data() {
     return {
@@ -107,7 +111,11 @@ export default {
     },
     showInput() {
       this.inputVisible = true;
-      this.$nextTick(() => this.$refs.optionInput.focus());
+
+      this.$nextTick(() => {
+        this.parentForm.clearValidate();
+        this.$refs.optionInput.focus();
+      });
     },
 
     async handleInputConfirm() {
