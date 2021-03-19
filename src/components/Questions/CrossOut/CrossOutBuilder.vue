@@ -15,11 +15,11 @@
 
     <div class="crossout-builder__new">
       <el-input
+        size="medium"
         ref="optionInput"
         class="input input-new-tag"
         v-if="inputVisible"
         v-model="inputValue"
-        size="mini"
         @keyup.enter.native="handleInputConfirm"
         @blur="handleInputConfirm"
         placeholder="Type option and click Enter to add ( or click outside of the field )"
