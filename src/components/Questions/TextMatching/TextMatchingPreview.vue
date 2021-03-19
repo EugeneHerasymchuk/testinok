@@ -1,27 +1,46 @@
 <template>
-  <div>
-    <div class="wrapper">
-      <drop-list
-        :items="questionConfig.attempt.arrayLine"
-        class="list"
-        @insert="onInsert"
-        @reorder="$event.apply(questionConfig.attempt.arrayLine)"
-        :accepts-data="allowDropCurrentList"
+  <div class="textmatching-preview">
+    <div
+      class="textmatching-preview__list-item"
+      v-for="(matchingGroup, index) in questionConfig.attempt.list"
+      :key="index"
+    >
+      <el-tag effect="plain">{{ matchingGroup.first }}</el-tag>
+      <drop
+        :class="{
+          'textmatching-preview__list-item-drop': true,
+          'textmatching-preview__list-item-drop--empty': !matchingGroup.second,
+        }"
+        @drop="(e) => (matchingGroup.second = e.data)"
       >
-        <template v-slot:item="{ item, reorder }">
-          <drag class="item" :key="item.key">
-            <el-tag :type="reorder ? 'success' : ''">{{ item.value }}</el-tag>
-          </drag>
-        </template>
-        <template v-slot:feedback="{ data }">
-          <div class="item feedback" :key="data.key">{{ data.value }}</div>
-        </template>
-      </drop-list>
+        <el-tag type="warning" effect="plain">
+          <i v-if="!matchingGroup.second" class="el-icon-full-screen"></i>
+          {{ matchingGroup.second }}
+        </el-tag>
+      </drop>
+    </div>
+
+    <div class="textmatching-preview__bucket">
+      <div v-for="(bucketItem, index) in textMatchingSelection" :key="index">
+        <drag
+          :key="index"
+          :data="bucketItem.value"
+          @copy="
+            () => {
+              bucketItem.used = true;
+            }
+          "
+        >
+          <el-tag :type="!bucketItem.used ? 'success' : 'info'" effect="plain">
+            {{ bucketItem.value }}
+          </el-tag>
+        </drag>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { Drag, DropList } from "vue-easy-dnd";
+import { Drop, Drag } from "vue-easy-dnd";
 
 export default {
   name: "TextMatchingPreview",
@@ -31,21 +50,30 @@ export default {
       type: Object,
     },
   },
+  data() {
+    return {
+      textMatchingSelection: [],
+    };
+  },
   components: {
+    Drop,
     Drag,
-    DropList,
   },
   created() {
-    this.questionConfig.attempt.arrayLine = this.shuffleArray([
-      ...this.questionConfig.meta.sentence
-        .split(" ")
-        .map((x, i) => ({ value: x, key: i })),
-    ]);
+    this.questionConfig.attempt.list = [
+      ...this.questionConfig.meta.list.map((x) => {
+        this.textMatchingSelection.push({ value: x[1], used: false });
+        return {
+          first: x[0],
+          second: null,
+        };
+      }),
+    ];
+
+    this.textMatchingSelection = this.shuffleArray(this.textMatchingSelection);
   },
   methods: {
-    allowDropCurrentList(d) {
-      return this.questionConfig.attempt.arrayLine.includes(d);
-    },
+    useBucketItem() {},
     onInsert(event) {
       this.questionConfig.attempt.arrayLine.splice(event.index, 0, event.data);
     },
@@ -59,17 +87,39 @@ export default {
   },
 };
 </script>
-<style scoped>
-.list {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-}
+<style lang="sass">
+.drop-in
+  border-radius: 4px
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.4)
+  transition: 0.2s
+.drop-allowed > span.el-tag
+  background-color: rgba(0, 255, 0, 0.1)
+</style>
+<style lang="sass" scoped>
+.textmatching-preview
+  &__bucket
+    display: flex
+    justify-content: space-around
+    border: 1px dashed #f5dab1
+    border-radius: 4px
+    padding: 1rem
 
-.item {
-  margin: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  &__list-item-drop
+    &--empty > span.el-tag
+      border-style: dashed
+    & > span.el-tag
+      min-height: 32px
+      white-space: unset
+      height: unset
+      border-style: dashed
+
+  &__list-item
+    display: flex
+    align-items: center
+    margin-bottom: 1rem
+    & > span.el-tag
+      min-height: 32px
+      white-space: unset
+      height: unset
+      margin-right: 1rem
 </style>

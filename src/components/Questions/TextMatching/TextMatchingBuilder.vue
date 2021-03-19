@@ -5,8 +5,8 @@
       v-for="(matchingGroup, index) in questionConfig.meta.list"
       :key="index"
     >
-      <span>{{ matchingGroup[0] }}</span>
-      <span>{{ matchingGroup[1] }}</span>
+      <el-tag effect="plain">{{ matchingGroup[0] }}</el-tag>
+      <el-tag effect="plain">{{ matchingGroup[1] }}</el-tag>
       <el-button
         @click="removeMatchingGroup(index)"
         icon="el-icon-delete"
@@ -149,16 +149,11 @@ export default {
     display: flex
     align-items: center
     margin-bottom: 1rem
-    & > span
-      padding: 0 10px
-      border: 1px solid #b3d8ff
-      border-radius: 4px
-      line-height: 30px
-      color: #409eff
-      margin: 0 1rem 0 0
-      height: 32px
-      box-sizing: border-box
-      font-size: 12px
+    & > span.el-tag
+      min-height: 32px
+      white-space: unset
+      height: unset
+      margin-right: 1rem
   &__new
     display: flex
     justify-content: space-between
