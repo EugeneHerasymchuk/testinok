@@ -5,8 +5,8 @@
       v-for="(matchingGroup, index) in questionConfig.meta.list"
       :key="index"
     >
-      <el-tag effect="plain">{{ matchingGroup[0] }}</el-tag>
-      <el-tag effect="plain">{{ matchingGroup[1] }}</el-tag>
+      <el-tag effect="plain">{{ matchingGroup.option }}</el-tag>
+      <el-tag effect="plain">{{ matchingGroup.matching }}</el-tag>
       <el-button
         @click="removeMatchingGroup(index)"
         icon="el-icon-delete"
@@ -125,7 +125,10 @@ export default {
         const matchingValue = this.onInputChange(this.inputForm.form.matching);
 
         if (optionValue && matchingValue) {
-          this.questionConfig.meta.list.push([optionValue, matchingValue]);
+          this.questionConfig.meta.list.push({
+            option: optionValue,
+            matching: matchingValue,
+          });
         }
         this.inputVisible = false;
         this.$refs.matchingInputForm.resetFields();

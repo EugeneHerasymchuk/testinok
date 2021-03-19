@@ -61,10 +61,10 @@ export default {
   },
   created() {
     this.questionConfig.attempt.list = [
-      ...this.questionConfig.meta.list.map((x) => {
-        this.textMatchingSelection.push({ value: x[1], used: false });
+      ...this.questionConfig.meta.list.map(({ option, matching }) => {
+        this.textMatchingSelection.push({ value: matching, used: false });
         return {
-          first: x[0],
+          first: option,
           second: null,
         };
       }),
