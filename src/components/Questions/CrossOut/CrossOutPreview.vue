@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-radio-group v-model="questionConfig.attempt.selection">
+    <el-radio-group v-model="questionConfig.attempt.selection" size="medium">
       <el-radio-button
         v-for="answer in questionConfig.meta.list"
         :key="answer"
