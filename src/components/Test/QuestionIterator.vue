@@ -1,6 +1,6 @@
 <template>
   <div class="iterator">
-    <div class="iterator_header text-left">
+    <div class="iterator__header text-left">
       <span>
         <i class="el-icon-question"></i>
         {{ questions[questionId].meta.title }}
@@ -15,6 +15,7 @@
     </keep-alive>
 
     <el-pagination
+      class="iterator__pagination"
       background
       :current-page.sync="currentQuestionI"
       layout="prev, pager, next, slot"
@@ -25,7 +26,7 @@
     <el-divider></el-divider>
 
     <el-button
-      class="iterator__button"
+      class="iterator__button-finish"
       size="mini"
       type="success"
       plain
@@ -110,10 +111,13 @@ export default {
 };
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .test-result > .el-drawer__body
   overflow: auto
 
-.iterator__button
-  margin-bottom: 1rem
+.iterator
+  &__header, &__button-finish
+    margin-bottom: 2rem
+  &__pagination
+    margin-top: 2rem
 </style>
