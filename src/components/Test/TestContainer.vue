@@ -36,15 +36,6 @@
             <i class="el-icon-loading"></i>
           </div>
 
-          <QuestionIterator
-            v-else-if="
-              data &&
-              data.Students.length &&
-              data.Students[0].Students_Tests.length
-            "
-            :questionsMap="data.Students[0].Students_Tests[0].Test.questions"
-          />
-
           <div v-else-if="data && !data.Students.length">
             Wrong Student code
             <el-button type="text" @click="codeProvided = false"
@@ -62,6 +53,23 @@
             {{ data.Students[0].first_name }} {{ data.Students[0].last_name }},
             please contact a teacher to assign you to a test
           </div>
+
+          <div
+            v-else-if="
+              data &&
+              data.Students.length &&
+              !Object.values(data.Students[0].Students_Tests[0].Test.questions)
+                .length
+            "
+          >
+            {{ data.Students[0].first_name }} {{ data.Students[0].last_name }},
+            please contact a teacher to add questions to the test
+          </div>
+
+          <QuestionIterator
+            v-else
+            :questionsMap="data.Students[0].Students_Tests[0].Test.questions"
+          />
         </template>
       </ApolloQuery>
     </el-col>
