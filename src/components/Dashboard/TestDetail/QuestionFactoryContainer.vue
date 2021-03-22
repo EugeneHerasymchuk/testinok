@@ -33,7 +33,7 @@
       <el-tab-pane :disabled="true">
         <span slot="label"><i class="el-icon-view"></i> Preview</span>
         <el-row type="flex" class="text-left">
-          <el-col>
+          <el-col v-if="currentTab === '1'">
             <span>
               <el-tag round :type="isAttemptCorrect ? 'success' : 'danger'">{{
                 isAttemptCorrect ? "Correct" : "Incorrect"
@@ -127,7 +127,7 @@ export default {
     this.questionForm.rules["meta"] = [
       {
         validator: this.question.validate,
-        trigger: 'broken',
+        trigger: "broken",
       },
     ];
   },

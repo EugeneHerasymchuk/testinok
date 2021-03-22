@@ -71,11 +71,7 @@ export default {
       this.inputValue = "";
     },
     onInputChange(value) {
-      return value
-        .split(" ")
-        .map((x) => x.trim())
-        .filter((x) => x.length)
-        .join(" ");
+      return this.trimSentence(value);
     },
   },
 };

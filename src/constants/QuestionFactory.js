@@ -3,7 +3,8 @@ import { nanoid } from "nanoid";
 export const QUESTION_TYPES = {
   RightOrder: "RightOrder",
   CrossOut: "CrossOut",
-  TextMatching: "TextMatching"
+  TextMatching: "TextMatching",
+  CompleteTable: "CompleteTable"
   // PictureMatching: "PictureMatching",
   // SingleChoice: "SingleChoice",
   // MultipleChoice: "MultipleChoice",
@@ -101,6 +102,54 @@ export const getNewQuestionMeta = (questionType) => {
               ) || {}
             ).matching === matching
         );
+      }
+    },
+    [QUESTION_TYPES.CompleteTable]: {
+      meta: {
+        id: "",
+        title: "Complete the table with the words below",
+        groups: []
+      },
+      attempt: {
+        groups: []
+      },
+      validate(rule, { groups } /* meta object */, callback) {
+        const multipleGroupsValidation = groups.length > 1;
+        const uniqueGroupsNameValidation =
+          new Set(groups.map(({ name }) => name).filter((name) => name.length))
+            .size === groups.length;
+
+        const groupItemsFlatList = groups
+          .map(({ list }) => list)
+          .reduce((acc, val) => acc.concat(val), []);
+
+        const uniqueGroupItemsNameValidation =
+          new Set(groupItemsFlatList).size === groupItemsFlatList.length;
+
+        const groupItemsValidation = groups.every(({ list }) => list.length);
+
+        if (!multipleGroupsValidation) {
+          callback(new Error("Please add at least two groups for the table"));
+        } else if (!groupItemsValidation) {
+          callback(new Error("Please add at least one item per group"));
+        } else if (!uniqueGroupsNameValidation) {
+          callback(new Error("Group should have unique names"));
+        } else if (!uniqueGroupItemsNameValidation) {
+          callback(
+            new Error("Group items should be unique inside and across groups")
+          );
+        } else {
+          callback();
+        }
+      },
+      check() {
+        return this.meta.groups.every(({ name, list }) => {
+          const targetGroup = this.attempt.groups.find(
+            (attemptGroup) => attemptGroup.name === name
+          );
+
+          return targetGroup?.list.every((item) => list.includes(item));
+        });
       }
     }
   };

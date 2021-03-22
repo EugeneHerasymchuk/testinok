@@ -229,6 +229,9 @@
                           <el-dropdown-item :command="QUESTION_TYPES.TextMatching">
                             Match halves
                           </el-dropdown-item>
+                          <el-dropdown-item :command="QUESTION_TYPES.CompleteTable">
+                            Complete the table
+                          </el-dropdown-item>
                           <el-dropdown-item command="more" disabled>
                             More coming...
                           </el-dropdown-item>

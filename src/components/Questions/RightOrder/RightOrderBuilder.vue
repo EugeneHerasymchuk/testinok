@@ -22,11 +22,7 @@ export default {
   },
   methods: {
     onSentenceChange(value) {
-      this.questionConfig.meta.sentence = value
-        .split(" ")
-        .map((x) => x.trim())
-        .filter((x) => x.length)
-        .join(" ");
+      this.questionConfig.meta.sentence = this.trimSentence(value)
     },
   },
 };
