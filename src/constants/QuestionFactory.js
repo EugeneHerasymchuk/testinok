@@ -143,8 +143,8 @@ export const getNewQuestionMeta = (questionType) => {
         }
       },
       check() {
-        return this.meta.groups.every(({ name, list }) => {
-          const targetGroup = this.attempt.groups.find(
+        return this.attempt.groups.every(({ name, list }) => {
+          const targetGroup = this.meta.groups.find(
             (attemptGroup) => attemptGroup.name === name
           );
 

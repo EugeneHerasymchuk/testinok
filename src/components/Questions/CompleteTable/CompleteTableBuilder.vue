@@ -1,7 +1,7 @@
 <template>
   <div class="complete-table-builder">
     <el-row
-      gutter="24"
+      :gutter="24"
       type="flex"
       class="complete-table-builder__group flex-wrap"
       v-for="(group, index) in questionConfig.meta.groups"
