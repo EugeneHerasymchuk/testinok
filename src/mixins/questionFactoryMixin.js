@@ -5,6 +5,8 @@ import CrossOutBuilder from "../components/Questions/CrossOut/CrossOutBuilder";
 import CrossOutPreview from "../components/Questions/CrossOut/CrossOutPreview";
 import TextMatchingPreview from "../components/Questions/TextMatching/TextMatchingPreview";
 import TextMatchingBuilder from "../components/Questions/TextMatching/TextMatchingBuilder";
+import CompleteTablePreview from "../components/Questions/CompleteTable/CompleteTablePreview";
+import CompleteTableBuilder from "../components/Questions/CompleteTable/CompleteTableBuilder";
 
 export default {
   data() {
@@ -22,6 +24,10 @@ export default {
         [QUESTION_TYPES.TextMatching]: {
           builder: TextMatchingBuilder,
           preview: TextMatchingPreview
+        },
+        [QUESTION_TYPES.CompleteTable]: {
+          builder: CompleteTableBuilder,
+          preview: CompleteTablePreview
         }
       }
     };

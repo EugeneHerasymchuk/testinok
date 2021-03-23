@@ -65,7 +65,7 @@ export default {
       }),
     ];
 
-    this.textMatchingSelection = this.shuffleArray(this.textMatchingSelection);
+    this.textMatchingSelection = this.shuffleArrayMixin(this.textMatchingSelection);
   },
   methods: {
     dropMatchingFromBucket(data, matchingGroup) {
@@ -80,17 +80,7 @@ export default {
           ? true
           : false;
       });
-    },
-    onInsert(event) {
-      this.questionConfig.attempt.arrayLine.splice(event.index, 0, event.data);
-    },
-    shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; --i) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    },
+    }
   },
 };
 </script>
