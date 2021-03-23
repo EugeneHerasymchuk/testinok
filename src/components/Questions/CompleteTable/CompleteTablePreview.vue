@@ -32,7 +32,7 @@
       </template>
     </drop-list>
 
-    <el-row type="flex" justify="space-around">
+    <el-row class="flex-wrap" type="flex" justify="space-around">
       <el-col
         class="complete-table-preview__group-zone"
         v-for="(group, index) in questionConfig.attempt.groups"
@@ -120,6 +120,7 @@ export default {
 <style lang="sass" scoped>
 .complete-table-preview
   &__group-zone
+    max-width: 25rem
     border: 1px solid #d9ecff
     border-radius: 4px
     padding: 1rem
@@ -133,8 +134,9 @@ export default {
     border-radius: 4px
     padding: 1rem
   &__item
+    width: 100%
     white-space: break-spaces
-    min-height: 32px
+    min-height: 2rem
     height: unset
     margin: 0 0.5rem 0.5rem 0
 </style>
