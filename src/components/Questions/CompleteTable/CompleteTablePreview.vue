@@ -14,7 +14,7 @@
           @cut="onRemoveFromList(item, groupItems)"
         >
           <el-tag
-            class="complete-table-preview__item"
+            class="complete-table-preview__item full-width"
             :type="reorder ? 'success' : ''"
           >
             {{ item }}
@@ -54,7 +54,7 @@
               @cut="onRemoveFromList(item, group.list)"
             >
               <el-tag
-                class="complete-table-preview__item"
+                class="complete-table-preview__item full-width"
                 :type="reorder ? 'success' : ''"
                 >{{ item }}</el-tag
               >
@@ -134,9 +134,10 @@ export default {
     border-radius: 4px
     padding: 1rem
   &__item
-    width: 100%
     white-space: break-spaces
     min-height: 2rem
     height: unset
     margin: 0 0.5rem 0.5rem 0
+    &.full-width
+      width: 100%
 </style>
