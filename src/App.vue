@@ -23,4 +23,8 @@ export default {
 .text-left {
   text-align: left;
 }
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
 </style>

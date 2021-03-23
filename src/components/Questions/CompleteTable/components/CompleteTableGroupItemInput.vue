@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div class="group-item-input">
     <el-input
       size="medium"
       :ref="inputRefName"
       v-if="groupItemInputVisible"
       v-model="inputGroupItemValue"
       @keyup.enter.native="handleGroupItemInputConfirm"
-      @blur.prevent="handleGroupItemInputConfirm"
+      @blur="handleGroupItemInputConfirm"
       placeholder="Provide group item"
     />
-    <el-button v-else size="medium" @click="showItemInput()">
+    <el-button v-else size="mini" @click="showItemInput()">
       + New Option
     </el-button>
   </div>
@@ -28,7 +28,7 @@ export default {
     handleGroupItemInputConfirm() {
       const trimmedValue = this.trimSentence(this.inputGroupItemValue);
 
-      if (trimmedValue.length) {
+      if (trimmedValue) {
         this.$emit("groupItemInputChange", trimmedValue);
       }
 
@@ -46,3 +46,7 @@ export default {
   },
 };
 </script>
+<style lang="sass" scoped>
+.group-item-input
+  flex-basis: 100%
+</style>

@@ -1,29 +1,22 @@
 <template>
   <div class="complete-table-builder">
     <el-row
+      gutter="24"
       type="flex"
-      class="complete-table-builder__group"
+      class="complete-table-builder__group flex-wrap"
       v-for="(group, index) in questionConfig.meta.groups"
       :key="index"
     >
       <el-col :span="6">
-        <el-input
-          placeholder="Provide Group Name"
-          v-model="group.name"
-          @change="dropQuestionFormValidation"
-          @blur="dropQuestionFormValidation"
+        <CompleteTableGroupNameInput
+          :group="group"
+          @groupNameInputChange="dropQuestionFormValidation"
         />
-        <el-button
-          @click="removeGroup(index)"
-          icon="el-icon-delete"
-          size="mini"
-          circle
-          plain
-        ></el-button>
       </el-col>
-      <el-col :span="18">
-        <div class="complete-table-builder__group-list">
+      <el-col :span="17">
+        <el-row type="flex" justify="start" class="flex-wrap">
           <el-tag
+            class="complete-table-builder__group-item"
             v-for="(groupItem, groupItemIndex) in group.list"
             :label="groupItem"
             :key="groupItemIndex"
@@ -39,14 +32,28 @@
               (value) => handleGroupItemInputConfirm(value, group.list)
             "
           />
-        </div>
+        </el-row>
       </el-col>
+      <el-col :span="1">
+        <el-button
+          @click="removeGroup(index)"
+          icon="el-icon-delete"
+          size="mini"
+          circle
+          type="danger"
+          plain
+          label="Remove group"
+        >
+        </el-button>
+      </el-col>
+        <el-divider></el-divider>
     </el-row>
     <el-button @click="newGroup">+ New group</el-button>
   </div>
 </template>
 <script>
 import CompleteTableGroupItemInput from "./components/CompleteTableGroupItemInput";
+import CompleteTableGroupNameInput from "./components/CompleteTableGroupNameInput";
 
 export default {
   name: "CompleteTableBuilder",
@@ -62,6 +69,7 @@ export default {
   },
   components: {
     CompleteTableGroupItemInput,
+    CompleteTableGroupNameInput,
   },
   data() {
     return {
@@ -109,4 +117,13 @@ export default {
 };
 </script>
 <style lang="sass" scoped>
+.complete-table-builder
+  text-align: left
+
+  &__group-item
+    white-space: break-spaces
+    min-height: 32px
+    height: unset
+    margin-right: 0.5rem
+    margin-bottom: 0.5rem
 </style>
