@@ -1,5 +1,5 @@
 <template>
-  <el-row type="flex" align="middle" justify="center" class="test-container">
+  <el-row type="flex" align="top" justify="center" class="test-container">
     <el-col :span="12">
       <div v-if="!codeProvided">
         Please provide your Student Code
@@ -110,12 +110,12 @@ export default {
   },
 };
 </script>
-<style scoped>
-.test-container {
-  height: 80vh;
-}
+<style lang="sass" scoped>
+.test-container
+  margin-top: 20%
+  height: 80vh
 
-.test-container__code-button {
-  margin-top: 1rem;
-}
+
+  &__code-button
+    margin-top: 1rem
 </style>
