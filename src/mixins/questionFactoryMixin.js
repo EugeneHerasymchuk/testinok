@@ -7,6 +7,8 @@ import TextMatchingPreview from "../components/Questions/TextMatching/TextMatchi
 import TextMatchingBuilder from "../components/Questions/TextMatching/TextMatchingBuilder";
 import CompleteTablePreview from "../components/Questions/CompleteTable/CompleteTablePreview";
 import CompleteTableBuilder from "../components/Questions/CompleteTable/CompleteTableBuilder";
+import ChooseAlternativesBuilder from "../components/Questions/ChooseAlternatives/ChooseAlternativesBuilder";
+import ChooseAlternativesPreview from "../components/Questions/ChooseAlternatives/ChooseAlternativesPreview";
 
 export default {
   data() {
@@ -28,6 +30,10 @@ export default {
         [QUESTION_TYPES.CompleteTable]: {
           builder: CompleteTableBuilder,
           preview: CompleteTablePreview
+        },
+        [QUESTION_TYPES.ChooseAlternatives]: {
+          builder: ChooseAlternativesBuilder,
+          preview: ChooseAlternativesPreview
         }
       }
     };

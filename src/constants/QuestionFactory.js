@@ -4,7 +4,8 @@ export const QUESTION_TYPES = {
   RightOrder: "RightOrder",
   CrossOut: "CrossOut",
   TextMatching: "TextMatching",
-  CompleteTable: "CompleteTable"
+  CompleteTable: "CompleteTable",
+  ChooseAlternatives: "ChooseAlternatives"
   // PictureMatching: "PictureMatching",
   // SingleChoice: "SingleChoice",
   // MultipleChoice: "MultipleChoice",
@@ -150,6 +151,44 @@ export const getNewQuestionMeta = (questionType) => {
 
           return targetGroup?.list.every((item) => list.includes(item));
         });
+      }
+    },
+    [QUESTION_TYPES.ChooseAlternatives]: {
+      meta: {
+        id: "",
+        title: "Choose alternatives",
+        groups: []
+      },
+      attempt: {
+        groups: []
+      },
+      validate(rule, { groups } /* meta object */, callback) {
+        const alternativeGroupValidation = groups.some(
+          (groupItem) => groupItem.type !== "text"
+        );
+        const allTextsFilled = groups.every((groupItem) => {
+          return groupItem.type === "text"
+            ? groupItem.text.length
+            : groupItem.options.every(({ text }) => text.length) &&
+                groupItem.selection;
+        });
+
+        if (!alternativeGroupValidation) {
+          callback(new Error("Please add at least one group with selections"));
+        } else if (!allTextsFilled) {
+          callback(
+            new Error("Please fill all sections and select all correct options")
+          );
+        } else {
+          callback();
+        }
+      },
+      check() {
+        return this.attempt.groups.every((groupItem, index) =>
+          groupItem.type === "text"
+            ? true
+            : groupItem.selection === this.meta.groups[index].selection
+        );
       }
     }
   };
