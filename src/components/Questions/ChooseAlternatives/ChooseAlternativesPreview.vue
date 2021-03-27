@@ -1,6 +1,9 @@
 <template>
   <div class="choose-alternatives-preview">
-    <span v-for="(groupItem, index) in questionConfig.attempt.groups" :key="index">
+    <span
+      v-for="(groupItem, index) in questionConfig.attempt.groups"
+      :key="index"
+    >
       <span v-if="groupItem.type === 'text'">
         {{ groupItem.text }}
       </span>
