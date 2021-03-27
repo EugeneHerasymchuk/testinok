@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <span class="switch-input">
     <el-input
       size="medium"
       :ref="inputRefName"
       v-if="groupItemInputVisible"
-      v-model="group.name"
+      v-model="group.text"
       @keyup.enter.native="handleGroupItemInputConfirm"
       @blur.prevent="handleGroupItemInputConfirm"
-      placeholder="Provide group name"
+      :placeholder="placeholder"
     />
     <el-button
       v-else
@@ -17,17 +17,20 @@
       plain
       icon="el-icon-edit"
     >
-      <span v-if="group.name">
-        {{ group.name }}
+      <span v-if="group.text">
+        {{ group.text }}
       </span>
-      <span v-else> (Provide group name) </span>
     </el-button>
-  </div>
+  </span>
 </template>
 <script>
 export default {
-  name: "CompleteTableGroupNameInput",
+  name: "SwitchInputButton",
   props: {
+    placeholder: {
+      type: String,
+      required: true,
+    },
     group: {
       type: Object,
       required: true,
@@ -41,7 +44,7 @@ export default {
   },
   methods: {
     handleGroupItemInputConfirm() {
-      this.group.name = this.trimSentence(this.group.name);
+      this.group.text = this.trimSentence(this.group.text);
       this.groupItemInputVisible = false;
     },
     showItemInput() {
@@ -56,6 +59,11 @@ export default {
 };
 </script>
 <style lang="sass" scoped>
+.switch-input
+  max-width: 20rem
+  & > .el-input
+    width: unset
+    min-width: 2rem
 .group-name-input
   width: 100%
   overflow: hidden
