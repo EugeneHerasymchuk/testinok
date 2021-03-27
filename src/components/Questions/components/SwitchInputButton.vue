@@ -15,7 +15,7 @@
       size="medium"
       @click="showItemInput()"
       plain
-      icon="el-icon-edit"
+      :icon="showEditIcon ? 'el-icon-edit' : ''"
     >
       <span v-if="group.text">
         {{ group.text }}
@@ -27,6 +27,10 @@
 export default {
   name: "SwitchInputButton",
   props: {
+    showEditIcon: {
+      type: Boolean,
+      default: true,
+    },
     placeholder: {
       type: String,
       required: true,

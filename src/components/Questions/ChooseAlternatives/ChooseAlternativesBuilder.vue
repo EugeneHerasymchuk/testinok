@@ -15,6 +15,12 @@
       :key="index"
       class="group-item"
     >
+      <!-- <el-input
+        class="group-item__input"
+        v-if="groupItem.type === 'text'"
+        v-model="groupItem.text"
+      /> -->
+
       <SwitchInputButton
         placeholder="Provide alternative"
         v-if="groupItem.type === 'text'"
@@ -114,14 +120,9 @@ export default {
   },
 };
 </script>
-<style lang="sass">
-.el-input__inner
-  height: 36px
-</style>
 <style lang="sass" scoped>
 .choose-alternatives-builder
   display: flex
-  flex-wrap: wrap
   flex-wrap: wrap
 .group-item
   display: flex
@@ -133,14 +134,14 @@ export default {
     padding: 0.2rem
     margin: 0 0.5rem
 
-    &__alternative-option
-      margin: 0 0.5rem
-      display: flex
-      flex-wrap: nowrap
-      justify-content: center
-      align-items: center
-      .el-radio
-        margin: 0 -0.2rem
-        &__label
-          width: 0
+  &__alternative-option
+    margin: 0 0.5rem
+    display: flex
+    flex-wrap: nowrap
+    justify-content: center
+    align-items: center
+    .el-radio
+      margin: 0 -0.2rem
+      &__label
+        width: 0
 </style>

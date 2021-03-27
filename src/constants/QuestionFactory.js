@@ -163,13 +163,19 @@ export const getNewQuestionMeta = (questionType) => {
         groups: []
       },
       validate(rule, { groups } /* meta object */, callback) {
+        const alternativeGroupValidation = groups.some(
+          (groupItem) => groupItem.type !== "text"
+        );
         const allTextsFilled = groups.every((groupItem) => {
           return groupItem.type === "text"
             ? groupItem.text.length
             : groupItem.options.every(({ text }) => text.length) &&
                 groupItem.selection;
         });
-        if (!allTextsFilled) {
+
+        if (!alternativeGroupValidation) {
+          callback(new Error("Please add at least one group with selections"));
+        } else if (!allTextsFilled) {
           callback(
             new Error("Please fill all sections and select all correct options")
           );

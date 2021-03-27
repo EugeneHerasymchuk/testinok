@@ -7,12 +7,14 @@
       <span v-if="groupItem.type === 'text'">
         {{ groupItem.text }}
       </span>
-      <el-radio-group v-else v-model="groupItem.selection" size="mini">
+      <el-radio-group v-else v-model="groupItem.selection" size="medium">
         <el-radio-button
           v-for="(option, optionIndex) in groupItem.options"
           :key="optionIndex"
           :label="optionIndex + 1"
-        ></el-radio-button>
+        >
+          {{ option.text }}
+        </el-radio-button>
       </el-radio-group>
     </span>
   </div>
