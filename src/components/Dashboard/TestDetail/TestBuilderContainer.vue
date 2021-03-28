@@ -62,7 +62,9 @@
                             : 'el-icon-top-right'
                         "
                         :loading="loading"
-                        @click="mutate"
+                        @click="
+                          publishTestWithCallback(data.Tests_by_pk, mutate)
+                        "
                         round
                         plain
                         >{{
@@ -226,13 +228,19 @@
                           <el-dropdown-item :command="QUESTION_TYPES.CrossOut">
                             Cross out word
                           </el-dropdown-item>
-                          <el-dropdown-item :command="QUESTION_TYPES.TextMatching">
+                          <el-dropdown-item
+                            :command="QUESTION_TYPES.TextMatching"
+                          >
                             Match halves
                           </el-dropdown-item>
-                          <el-dropdown-item :command="QUESTION_TYPES.CompleteTable">
+                          <el-dropdown-item
+                            :command="QUESTION_TYPES.CompleteTable"
+                          >
                             Complete the table
                           </el-dropdown-item>
-                          <el-dropdown-item :command="QUESTION_TYPES.ChooseAlternatives">
+                          <el-dropdown-item
+                            :command="QUESTION_TYPES.ChooseAlternatives"
+                          >
                             Choose alternatives
                           </el-dropdown-item>
                           <el-dropdown-item command="more" disabled>
@@ -288,12 +296,15 @@
                                   icon-color="red"
                                   title="Are you sure to delete this question?"
                                   @confirm="
-                                    mutate({
-                                      variables: {
-                                        id: testId,
-                                        deleteQuestionKey: scope.row.meta.id,
-                                      },
-                                    })
+                                    removeQuestionWithCallback(
+                                      data.Tests_by_pk,
+                                      mutate.bind(null, {
+                                        variables: {
+                                          id: testId,
+                                          deleteQuestionKey: scope.row.meta.id,
+                                        },
+                                      })
+                                    )
                                   "
                                 >
                                   <el-button
@@ -401,6 +412,27 @@ export default {
     toggleEditingMode() {
       this.questionPayload = null;
       this.editingMode = !this.editingMode;
+    },
+    publishTestWithCallback({ questions, is_published }, callback) {
+      if (!is_published && !Object.values(questions).length) {
+        this.$notify({
+          message: "Please add questions before publishing",
+          type: "error",
+        });
+      } else {
+        callback();
+      }
+    },
+    removeQuestionWithCallback({ questions, is_published }, callback) {
+      if (is_published && Object.values(questions).length === 1) {
+        this.$notify({
+          message:
+            "Please unpublish the test before removing the last question",
+          type: "error",
+        });
+      } else {
+        callback();
+      }
     },
   },
 };
