@@ -10,6 +10,7 @@
   "dependencies": {
     "@auth0/auth0-spa-js": "^1.13.6",
     "core-js": "^3.6.5",
+    "dayjs": "^1.10.4",
     "element-ui": "^2.4.5",
     "nanoid": "^3.1.20",
     "vue": "^2.6.11",

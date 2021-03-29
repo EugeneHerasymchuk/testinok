@@ -1,6 +1,6 @@
 #import "./TestFragment.gql"
-mutation UpdateTest($id: uuid!, $is_published: Boolean) {
-  update_Tests_by_pk(pk_columns: {id: $id}, _set: {is_published: $is_published}) {
+mutation UpdateTest($id: uuid!, $is_published: Boolean, $title: String) {
+  update_Tests_by_pk(pk_columns: {id: $id}, _set: {is_published: $is_published, title: $title}) {
       ...Test
   } 
 }

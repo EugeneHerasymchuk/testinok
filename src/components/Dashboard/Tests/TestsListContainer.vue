@@ -63,10 +63,7 @@
             </template>
           </ApolloMutation>
           <el-table :data="data.Tests" stripe style="width: 100%">
-            <el-table-column label="Title">
-              <template slot-scope="scope">
-                <span>{{ scope.row.title }}</span>
-              </template>
+            <el-table-column sortable prop="title" label="Title">
             </el-table-column>
             <el-table-column label="Published">
               <template slot-scope="scope">
@@ -88,8 +85,13 @@
                 ></el-button>
               </template>
             </el-table-column>
+            <el-table-column sortable prop="created_at" label="Created" :formatter="(row) => formatTimeStampMixin(row.created_at)">
+            </el-table-column>
             <el-table-column>
               <template slot-scope="scope">
+                <el-row>
+                  <el-col :span="4">
+              
                 <ApolloMutation
                   :mutation="require('./graphql/RemoveTest.gql')"
                   :variables="{
@@ -101,7 +103,7 @@
                     () => {
                       $notify({
                         message: 'Error occured',
-                        type: 'error'
+                        type: 'error',
                       });
                     }
                   "
@@ -125,10 +127,8 @@
                     </el-popconfirm>
                   </template>
                 </ApolloMutation>
-              </template>
-            </el-table-column>
-            <el-table-column>
-              <template slot-scope="scope">
+                  </el-col>
+                  <el-col :span="4">
                 <router-link
                   :to="{
                     name: 'TestEditing',
@@ -147,6 +147,8 @@
                   >
                   </el-button>
                 </router-link>
+                  </el-col>
+                </el-row>
               </template>
             </el-table-column>
           </el-table>
