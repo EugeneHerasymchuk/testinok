@@ -6,16 +6,11 @@ import "./plugins/element.js";
 import ElementUI from "element-ui";
 import locale from "element-ui/lib/locale/lang/en";
 import { Auth0Plugin } from "./auth";
-import copyToClipboardMixin from "./mixins/copyToClipboardMixin";
-import questionFactoryMixin from "./mixins/questionFactoryMixin";
-import trimSentenceMixin from "./mixins/trimSentenceMixin";
-import shuffleArrayMixin from "./mixins/shuffleArrayMixin";
+import { injectMixins } from "./mixins";
 
 Vue.use(ElementUI, { locale });
-Vue.mixin(copyToClipboardMixin);
-Vue.mixin(questionFactoryMixin);
-Vue.mixin(trimSentenceMixin);
-Vue.mixin(shuffleArrayMixin);
+
+injectMixins(Vue);
 
 Vue.use(Auth0Plugin, {
   domain: process.env.VUE_APP_AUTH0_DOMAIN,

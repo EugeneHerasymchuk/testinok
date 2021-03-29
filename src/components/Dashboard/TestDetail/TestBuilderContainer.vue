@@ -15,18 +15,69 @@
 
         <div v-else-if="data">
           <el-row>
-            <el-col :span="12"
-              ><div>Test: {{ data.Tests_by_pk.title }}</div>
+            <el-col :span="12">
+              <ApolloMutation
+                :mutation="require('./graphql/UpdateTest.gql')"
+                :update="updateCacheAfterTogglePublish"
+                class="form"
+                @done="
+                  () => {
+                    $notify({
+                      message: `Title for the test '${data.Tests_by_pk.title}' was updated`,
+                      type: 'success',
+                    });
+                  }
+                "
+                @error="
+                  () => {
+                    $notify({
+                      message: 'Error occured. Please try again',
+                      type: 'error',
+                    });
+                  }
+                "
+              >
+                <template slot-scope="{ mutate, loading }">
+                  <el-input
+                    autosize
+                    size="medium"
+                    ref="testNameInput"
+                    v-if="testNameInputVisible"
+                    v-model="temporaryTestNameValue"
+                    @keyup.enter.native="() => (testNameInputVisible = false)"
+                    @blur.prevent="() => (testNameInputVisible = false)"
+                    @change="
+                      () =>
+                        updateTestTitleWithCallback(
+                          data.Tests_by_pk.title,
+                          mutate.bind(null, {
+                            variables: {
+                              id: testId,
+                              title: temporaryTestNameValue,
+                            },
+                          })
+                        )
+                    "
+                  />
+                  <el-button
+                    v-else
+                    class="group-name-input"
+                    size="medium"
+                    @click="showTestNameInput(data.Tests_by_pk.title)"
+                    plain
+                    :loading="loading"
+                    icon="el-icon-edit"
+                  >
+                    {{ data.Tests_by_pk.title }}
+                  </el-button>
+                </template>
+              </ApolloMutation>
             </el-col>
             <el-col :span="12">
               <el-row type="flex" align="middle">
                 <el-col :span="5">
                   <ApolloMutation
                     :mutation="require('./graphql/UpdateTest.gql')"
-                    :variables="{
-                      id: testId,
-                      is_published: !data.Tests_by_pk.is_published,
-                    }"
                     :update="updateCacheAfterTogglePublish"
                     class="form"
                     @done="
@@ -63,7 +114,15 @@
                         "
                         :loading="loading"
                         @click="
-                          publishTestWithCallback(data.Tests_by_pk, mutate)
+                          publishTestWithCallback(
+                            data.Tests_by_pk,
+                            mutate.bind(null, {
+                              variables: {
+                                id: testId,
+                                is_published: !data.Tests_by_pk.is_published,
+                              },
+                            })
+                          )
                         "
                         round
                         plain
@@ -341,6 +400,8 @@ export default {
     return {
       activeName: "0",
       editingMode: false,
+      testNameInputVisible: false,
+      temporaryTestNameValue: "",
     };
   },
   methods: {
@@ -370,6 +431,7 @@ export default {
         if (update_Tests_by_pk) {
           data.Tests_by_pk.is_published = update_Tests_by_pk.is_published;
           data.Tests_by_pk.questions = update_Tests_by_pk.questions;
+          data.Tests_by_pk.title = update_Tests_by_pk.title;
         }
 
         if (delete_Students_Tests && delete_Students_Tests.returning.length) {
@@ -433,6 +495,23 @@ export default {
       } else {
         callback();
       }
+    },
+    showTestNameInput(value) {
+      this.temporaryTestNameValue = value;
+      this.testNameInputVisible = true;
+
+      this.$nextTick(() => {
+        this.$refs["testNameInput"].focus();
+      });
+    },
+    updateTestTitleWithCallback(oldTitle, callback) {
+      if (
+        this.temporaryTestNameValue.length &&
+        this.temporaryTestNameValue !== oldTitle
+      ) {
+        callback();
+      }
+      this.testNameInputVisible = false;
     },
   },
 };
