@@ -68,7 +68,7 @@ export const getNewQuestionMeta = (questionType) => {
     [QUESTION_TYPES.TextMatching]: {
       meta: {
         id: "",
-        title: "Cross out the word that does not fit the group...",
+        title: "Match two halves",
         list: []
       },
       attempt: {
