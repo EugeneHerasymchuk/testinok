@@ -119,6 +119,7 @@
                             mutate.bind(null, {
                               variables: {
                                 id: testId,
+                                title: data.Tests_by_pk.title,
                                 is_published: !data.Tests_by_pk.is_published,
                               },
                             })

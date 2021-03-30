@@ -6,18 +6,7 @@ export const QUESTION_TYPES = {
   TextMatching: "TextMatching",
   CompleteTable: "CompleteTable",
   ChooseAlternatives: "ChooseAlternatives"
-  // PictureMatching: "PictureMatching",
-  // SingleChoice: "SingleChoice",
-  // MultipleChoice: "MultipleChoice",
 };
-
-// export const QUESTION_OPTIONS = [
-//   {
-//     value: QUESTION_TYPES.CrossOut,
-//     label: "Cross out the word in each group which does not ...",
-//     icon: "el-icon-s-ticket"
-//   }
-// ];
 
 export const getNewQuestionMeta = (questionType) => {
   const META = {
@@ -106,6 +95,7 @@ export const getNewQuestionMeta = (questionType) => {
       }
     },
     [QUESTION_TYPES.CompleteTable]: {
+      attachments: {},
       meta: {
         id: "",
         title: "Complete the table with the words below",
