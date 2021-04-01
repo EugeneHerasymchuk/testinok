@@ -35,12 +35,16 @@ export default {
           builder: ChooseAlternativesBuilder,
           preview: ChooseAlternativesPreview
         }
-      }
+      },
+      attachmentsMap: {}
     };
   },
   methods: {
     newQuestion(questionType, questionMeta) {
-      return new Question(questionType, questionMeta);
+      return new Question(questionType, {
+        questionMeta,
+        questionAttachments: []
+      });
     }
   }
 };

@@ -8,6 +8,12 @@ export const QUESTION_TYPES = {
   ChooseAlternatives: "ChooseAlternatives"
 };
 
+export const ATTACHMENT_TYPES = {
+  Audio: "Audio",
+  Video: "Video",
+  HTML: "HTML"
+};
+
 export const getNewQuestionMeta = (questionType) => {
   const META = {
     [QUESTION_TYPES.RightOrder]: {
@@ -189,7 +195,7 @@ export const getNewQuestionMeta = (questionType) => {
 export class Question {
   type;
   attempt = {};
-  constructor(questionType, questionMeta) {
+  constructor(questionType, { questionMeta, questionAttachments }) {
     this.type = questionType;
     const { meta, attempt, validate, check } = getNewQuestionMeta(questionType);
 
@@ -199,9 +205,11 @@ export class Question {
 
     if (questionMeta) {
       this.meta = { ...questionMeta };
+      this.attachments = [ ...questionAttachments ];
     } else {
       this.meta = meta;
 
+      this.attachments = [];
       this.meta.id = nanoid();
     }
   }
