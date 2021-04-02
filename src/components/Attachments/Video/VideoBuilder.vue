@@ -1,9 +1,9 @@
 <template>
-  <div>Editor preview</div>
+  <div>Video builder</div>
 </template>
 <script>
 export default {
-  name: "EditorPreview",
+  name: "VideoBuilder",
   methods: {},
 };
 </script>

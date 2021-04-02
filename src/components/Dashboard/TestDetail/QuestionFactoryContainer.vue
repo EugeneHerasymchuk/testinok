@@ -20,6 +20,48 @@
             <el-input v-model="question.meta.title" clearable />
           </el-form-item>
 
+          <component
+            v-for="(attachment, attachmentIndex) in question.attachments"
+            :key="attachmentIndex"
+            :is="attachmentsMap[attachment.type].builder"
+            :attachmentConfig="attachment"
+          ></component>
+
+          <el-divider />
+
+          <el-dropdown @command="addNewAttachment">
+            <span class="el-dropdown-link">
+              Add new attachment
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                icon="el-icon-document"
+                :command="ATTACHMENT_TYPES.HTML"
+                :disabled="isAttachmentAlreadyAdded(ATTACHMENT_TYPES.HTML)"
+              >
+                HTML editor
+              </el-dropdown-item>
+              <el-dropdown-item
+                icon="el-icon-video-play"
+                :command="ATTACHMENT_TYPES.Audio"
+                :disabled="isAttachmentAlreadyAdded(ATTACHMENT_TYPES.Audio)"
+              >
+                Audio attachment
+              </el-dropdown-item>
+              <el-dropdown-item
+                icon="el-icon-video-camera"
+                :command="ATTACHMENT_TYPES.Video"
+                :disabled="isAttachmentAlreadyAdded(ATTACHMENT_TYPES.Video)"
+              >
+                Video attachment
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+
+          <el-divider />
+
           <el-form-item prop="meta">
             <component
               v-if="currentTab === '0'"
@@ -132,6 +174,11 @@ export default {
     ];
   },
   methods: {
+    isAttachmentAlreadyAdded(attachmentType) {
+      return !!this.question.attachments.find(
+        (attachment) => attachment.type === attachmentType
+      );
+    },
     async validateAndPreview() {
       if (await this.validateFactoryForm()) {
         this.currentTab = "1";
@@ -158,10 +205,19 @@ export default {
         return false;
       }
     },
+    addNewAttachment(attachmentType) {
+      this.question.attachments.push({
+        type: attachmentType,
+      });
+    },
   },
 };
 </script>
 <style scoped>
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
+}
 .buttons-group {
   margin-top: 1rem;
 }
