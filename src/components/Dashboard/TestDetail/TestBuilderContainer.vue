@@ -268,7 +268,9 @@
                       @close-without-saving="toggleEditingMode"
                       @save-question="
                         (questions) => {
-                          mutate({ variables: { questions, id: testId } });
+                          mutate({
+                            variables: { questions, id: testId },
+                          });
                         }
                       "
                     />

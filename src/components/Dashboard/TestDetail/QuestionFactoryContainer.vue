@@ -170,7 +170,8 @@ export default {
   created() {
     this.question = this.newQuestion(
       this.questionPayload.type,
-      this.questionPayload.meta
+      this.questionPayload.meta,
+      this.questionPayload.attachments
     );
 
     this.questionForm.rules["meta"] = [
@@ -199,6 +200,7 @@ export default {
         this.$emit("save-question", {
           [this.question.meta.id]: {
             meta: this.question.meta,
+            attachments: this.question.attachments,
             type: this.question.type,
           },
         });

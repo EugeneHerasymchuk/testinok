@@ -64,10 +64,10 @@ export default {
     };
   },
   methods: {
-    newQuestion(questionType, questionMeta) {
+    newQuestion(questionType, questionMeta, questionAttachments) {
       return new Question(questionType, {
         questionMeta,
-        questionAttachments: []
+        questionAttachments
       });
     }
   }
