@@ -23,7 +23,7 @@
       :page-size="1"
     >
     </el-pagination>
-    <el-divider></el-divider>
+    <el-divider />
 
     <el-button
       class="iterator__button-finish"
@@ -57,7 +57,7 @@
             {{ !!question.result ? "Correct" : "Incorrect" }}
           </el-tag>
         </div>
-        <el-divider></el-divider>
+        <el-divider />
         <span>{{ `Total results ${attempt.resultScore}` }}</span>
       </div>
     </el-drawer>

@@ -87,14 +87,21 @@
             </span>
           </el-col>
         </el-row>
-        <el-divider></el-divider>
+        <el-divider />
+        <component
+          v-for="(attachment, attachmentIndex) in question.attachments"
+          :key="attachmentIndex"
+          :is="attachmentsMap[attachment.type].preview"
+          :attachmentConfig="attachment"
+        ></component>
+        <el-divider />
         <component
           v-if="currentTab === '1'"
           :is="componentsMap[question.type].preview"
           :questionConfig="question"
           :parentForm="this.$refs[this.questionForm.name]"
         ></component>
-        <el-divider></el-divider>
+        <el-divider />
       </el-tab-pane>
     </el-tabs>
     <el-row type="flex" justify="space-between" class="buttons-group">

@@ -46,7 +46,7 @@
         >
         </el-button>
       </el-col>
-        <el-divider></el-divider>
+      <el-divider />
     </el-row>
     <el-button @click="newGroup">+ New group</el-button>
   </div>

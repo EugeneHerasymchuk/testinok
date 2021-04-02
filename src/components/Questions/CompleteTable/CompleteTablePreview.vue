@@ -39,7 +39,7 @@
         :key="index"
       >
         <span>{{ group.name }}</span>
-        <el-divider></el-divider>
+        <el-divider />
         <drop-list
           :items="group.list"
           class="complete-table-preview__drop"
