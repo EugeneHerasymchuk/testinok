@@ -74,34 +74,36 @@
       </el-tab-pane>
       <el-tab-pane :disabled="true">
         <span slot="label"><i class="el-icon-view"></i> Preview</span>
-        <el-row type="flex" class="text-left">
-          <el-col v-if="currentTab === '1'">
-            <span>
-              <el-tag round :type="isAttemptCorrect ? 'success' : 'danger'">{{
-                isAttemptCorrect ? "Correct" : "Incorrect"
-              }}</el-tag>
-            </span>
-            <span>
-              <i class="el-icon-question"></i>
-              {{ question.meta.title }}
-            </span>
-          </el-col>
-        </el-row>
-        <el-divider />
-        <component
-          v-for="(attachment, attachmentIndex) in question.attachments"
-          :key="attachmentIndex"
-          :is="attachmentsMap[attachment.type].preview"
-          :attachmentConfig="attachment"
-        ></component>
-        <el-divider />
-        <component
-          v-if="currentTab === '1'"
-          :is="componentsMap[question.type].preview"
-          :questionConfig="question"
-          :parentForm="this.$refs[this.questionForm.name]"
-        ></component>
-        <el-divider />
+
+        <div v-if="currentTab === '1'">
+          <el-row type="flex" class="text-left">
+            <el-col>
+              <span>
+                <el-tag round :type="isAttemptCorrect ? 'success' : 'danger'">{{
+                  isAttemptCorrect ? "Correct" : "Incorrect"
+                }}</el-tag>
+              </span>
+              <span>
+                <i class="el-icon-question"></i>
+                {{ question.meta.title }}
+              </span>
+            </el-col>
+          </el-row>
+          <el-divider />
+          <component
+            v-for="(attachment, attachmentIndex) in question.attachments"
+            :key="attachmentIndex"
+            :is="attachmentsMap[attachment.type].preview"
+            :attachmentConfig="attachment"
+          ></component>
+          <el-divider />
+          <component
+            :is="componentsMap[question.type].preview"
+            :questionConfig="question"
+            :parentForm="this.$refs[this.questionForm.name]"
+          ></component>
+          <el-divider />
+        </div>
       </el-tab-pane>
     </el-tabs>
     <el-row type="flex" justify="space-between" class="buttons-group">
@@ -168,11 +170,7 @@ export default {
     },
   },
   created() {
-    this.question = this.newQuestion(
-      this.questionPayload.type,
-      this.questionPayload.meta,
-      this.questionPayload.attachments
-    );
+    this.question = this.questionFromPayload(this.questionPayload);
 
     this.questionForm.rules["meta"] = [
       {
