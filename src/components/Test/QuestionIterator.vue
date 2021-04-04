@@ -6,6 +6,15 @@
         {{ questions[questionId].meta.title }}
       </span>
     </div>
+    <el-divider />
+    <component
+      v-for="(attachment, attachmentIndex) in questions[questionId].attachments"
+      :key="attachmentIndex"
+      :is="attachmentsMap[attachment.type].preview"
+      :attachmentConfig="attachment"
+    ></component>
+    <el-divider />
+
     <keep-alive>
       <component
         :is="componentsMap[questions[questionId].type].preview"
@@ -83,7 +92,7 @@ export default {
   },
   created() {
     this.questions = Object.values(this.questionsMap).map((questionPayload) =>
-      this.newQuestion(questionPayload.type, questionPayload.meta)
+      this.questionFromPayload(questionPayload)
     );
   },
   methods: {

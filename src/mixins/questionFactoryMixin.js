@@ -64,6 +64,13 @@ export default {
     };
   },
   methods: {
+    questionFromPayload(questionPayload) {
+      return new Question(questionPayload.type, {
+        questionMeta: questionPayload.meta,
+        questionAttachments: questionPayload.attachments
+      });
+    },
+    /* deprecated */
     newQuestion(questionType, questionMeta, questionAttachments) {
       return new Question(questionType, {
         questionMeta,

@@ -59,7 +59,10 @@ export default {
     return {
       editor: new Editor({
         extensions: [new Bold(), new Italic(), new Strike(), new Underline()],
-        content: ``,
+        content: this.attachmentConfig.content || ``,
+        onUpdate: ({ getJSON }) => {
+          this.attachmentConfig.content = getJSON();
+        },
       }),
     };
   },
@@ -73,12 +76,9 @@ export default {
   padding: 1rem
   line-height: 1
 .menubar__button
-  font-weight: 700
-  display: -webkit-inline-box
   display: inline-flex
   background: transparent
   border: 0
-  color: #000
   padding: .2rem .5rem
   margin-right: .2rem
   border-radius: 3px
