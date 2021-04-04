@@ -18,13 +18,14 @@
           <em>I</em>
         </button>
 
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.strike() }"
+        <el-button
+          :plain="!isActive.strike()"
+          type="info"
+          circle
           @click.prevent="commands.strike"
         >
-          <s>S</s>
-        </button>
+          <i><s>S</s></i>
+        </el-button>
 
         <button
           class="menubar__button"
@@ -32,6 +33,22 @@
           @click.prevent="commands.underline"
         >
           <u>U</u>
+        </button>
+        <el-button
+        type="info"
+          plain
+          circle
+          icon="el-icon-minus"
+          @click.prevent="commands.horizontal_rule"
+        >
+        </el-button>
+
+        <button class="menubar__button" @click.prevent="commands.undo">
+          <i class="el-icon-refresh-left" />
+        </button>
+
+        <button class="menubar__button" @click.prevent="commands.redo">
+          <i class="el-icon-refresh-right" />
         </button>
       </div>
     </editor-menu-bar>
@@ -41,7 +58,14 @@
 </template>
 <script>
 import { Editor, EditorContent, EditorMenuBar } from "tiptap";
-import { Bold, Italic, Strike, Underline } from "tiptap-extensions";
+import {
+  Bold,
+  Italic,
+  Strike,
+  Underline,
+  HorizontalRule,
+  History,
+} from "tiptap-extensions";
 
 export default {
   name: "EditorBuilder",
@@ -58,7 +82,14 @@ export default {
   data() {
     return {
       editor: new Editor({
-        extensions: [new Bold(), new Italic(), new Strike(), new Underline()],
+        extensions: [
+          new Bold(),
+          new Italic(),
+          new Strike(),
+          new Underline(),
+          new HorizontalRule(),
+          new History(),
+        ],
         content: this.attachmentConfig.content || ``,
         onUpdate: ({ getJSON }) => {
           this.attachmentConfig.content = getJSON();
@@ -71,10 +102,18 @@ export default {
   },
 };
 </script>
+<style lang="sass">
+div.ProseMirror
+  outline: unset
+  & > p
+    margin: 0
+</style>
+
 <style lang="sass" scoped>
 .editor__content
-  padding: 1rem
-  line-height: 1
+  padding: .5rem 2rem
+  border: 1px solid black
+  text-align: left
 .menubar__button
   display: inline-flex
   background: transparent
