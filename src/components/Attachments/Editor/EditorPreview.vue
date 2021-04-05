@@ -5,7 +5,15 @@
 </template>
 <script>
 import { Editor, EditorContent } from "tiptap";
-import { Bold, Italic, Strike, Underline } from "tiptap-extensions";
+import {
+  Bold,
+  Italic,
+  Strike,
+  Underline,
+  BulletList,
+  ListItem,
+  HorizontalRule,
+} from "tiptap-extensions";
 
 export default {
   name: "EditorPreview",
@@ -21,7 +29,15 @@ export default {
   data() {
     return {
       editor: new Editor({
-        extensions: [new Bold(), new Italic(), new Strike(), new Underline()],
+        extensions: [
+          new Bold(),
+          new Italic(),
+          new Strike(),
+          new Underline(),
+          new BulletList(),
+          new ListItem(),
+          new HorizontalRule(),
+        ],
         content: this.attachmentConfig.content,
         editable: false,
       }),
