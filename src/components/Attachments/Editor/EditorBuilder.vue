@@ -1,9 +1,9 @@
 <template>
   <div class="editor">
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
-      <div class="menubar">
+      <div>
         <button
-          class="menubar__button"
+          class="editor__controller"
           :class="{ 'is-active': isActive.bold() }"
           @click.prevent="commands.bold"
         >
@@ -11,43 +11,46 @@
         </button>
 
         <button
-          class="menubar__button"
+          class="editor__controller"
           :class="{ 'is-active': isActive.italic() }"
           @click.prevent="commands.italic"
         >
           <em>I</em>
         </button>
 
-        <el-button
-          :plain="!isActive.strike()"
-          type="info"
-          circle
+        <button
+          class="editor__controller"
+          :class="{ 'is-active': isActive.strike() }"
           @click.prevent="commands.strike"
         >
-          <i><s>S</s></i>
-        </el-button>
+          <s>S</s>
+        </button>
 
         <button
-          class="menubar__button"
+          class="editor__controller"
           :class="{ 'is-active': isActive.underline() }"
           @click.prevent="commands.underline"
         >
           <u>U</u>
         </button>
-        <el-button
-        type="info"
-          plain
-          circle
-          icon="el-icon-minus"
+        <button
+          class="editor__controller"
+          :class="{ 'is-active': isActive.bullet_list() }"
+          @click.prevent="commands.bullet_list"
+        >L</button>
+
+        <button
+          class="editor__controller"
           @click.prevent="commands.horizontal_rule"
         >
-        </el-button>
+          <i class="el-icon-minus" />
+        </button>
 
-        <button class="menubar__button" @click.prevent="commands.undo">
+        <button class="editor__controller" @click.prevent="commands.undo">
           <i class="el-icon-refresh-left" />
         </button>
 
-        <button class="menubar__button" @click.prevent="commands.redo">
+        <button class="editor__controller" @click.prevent="commands.redo">
           <i class="el-icon-refresh-right" />
         </button>
       </div>
@@ -63,6 +66,8 @@ import {
   Italic,
   Strike,
   Underline,
+  BulletList,
+  ListItem,
   HorizontalRule,
   History,
 } from "tiptap-extensions";
@@ -87,6 +92,8 @@ export default {
           new Italic(),
           new Strike(),
           new Underline(),
+          new BulletList(),
+          new ListItem(),
           new HorizontalRule(),
           new History(),
         ],
@@ -105,24 +112,26 @@ export default {
 <style lang="sass">
 div.ProseMirror
   outline: unset
-  & > p
+  & p, ul
     margin: 0
 </style>
 
 <style lang="sass" scoped>
-.editor__content
-  padding: .5rem 2rem
-  border: 1px solid black
-  text-align: left
-.menubar__button
-  display: inline-flex
-  background: transparent
-  border: 0
-  padding: .2rem .5rem
-  margin-right: .2rem
-  border-radius: 3px
-  cursor: pointer
+.editor
+  margin: 1rem 0
+  &__content
+    padding: .5rem 2rem
+    border: 1px solid #d3d4d6
+    border-radius: 6px
+    text-align: left
+  &__controller
+    background: transparent
+    border: 0
+    padding: .2rem .5rem
+    margin-right: .2rem
+    border-radius: 6px
+    cursor: pointer
 
-  &.is-active
-    background-color: rgba(0,0,0,.1)
+    &.is-active
+      background-color: rgba(0,0,0,.1)
 </style>

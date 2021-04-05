@@ -1,5 +1,7 @@
 <template>
-  <editor-content class="editor__content" :editor="editor" />
+  <div class="editor">
+    <editor-content class="editor__content" :editor="editor" />
+  </div>
 </template>
 <script>
 import { Editor, EditorContent } from "tiptap";
@@ -30,3 +32,12 @@ export default {
   },
 };
 </script>
+<style lang="sass" scoped>
+.editor
+  margin: 1rem 0
+  &__content
+    padding: .5rem 2rem
+    border: 1px solid #d3d4d6
+    border-radius: 6px
+    text-align: left
+</style>
