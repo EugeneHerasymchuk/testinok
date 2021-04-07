@@ -25,6 +25,7 @@
             :key="attachmentIndex"
             :is="attachmentsMap[attachment.type].builder"
             :attachmentConfig="attachment"
+            @remove="removeAttachment(attachmentIndex)"
           ></component>
 
           <el-divider />
@@ -216,6 +217,9 @@ export default {
       this.question.attachments.push({
         type: attachmentType,
       });
+    },
+    removeAttachment(attachmentIndex) {
+      this.question.attachments.splice(attachmentIndex, 1);
     },
   },
 };
