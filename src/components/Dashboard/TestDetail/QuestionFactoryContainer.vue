@@ -71,6 +71,8 @@
               :parentForm="this.$refs[this.questionForm.name]"
             ></component>
           </el-form-item>
+
+          <span class="tip" v-if="question.comment">{{ question.comment }}</span>
         </el-form>
       </el-tab-pane>
       <el-tab-pane :disabled="true">
@@ -234,5 +236,12 @@ export default {
 }
 .el-icon-question {
   margin-left: 1rem;
+}
+.tip {
+  padding: 8px 16px;
+  background-color: #ecf8ff;
+  border-radius: 4px;
+  border-left: 5px solid #50bfff;
+  margin: 20px 0;
 }
 </style>

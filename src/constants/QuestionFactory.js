@@ -150,6 +150,8 @@ export const getNewQuestionMeta = (questionType) => {
       }
     },
     [QUESTION_TYPES.ChooseAlternatives]: {
+      comment:
+        "Select 'Main sentence' to create sentence around the group of words to select from. And select 'Two/Three alternatives' to create group of two or three words to select from",
       meta: {
         id: "",
         title: "Choose alternatives",
@@ -197,15 +199,18 @@ export class Question {
   attempt = {};
   constructor(questionType, { questionMeta, questionAttachments }) {
     this.type = questionType;
-    const { meta, attempt, validate, check } = getNewQuestionMeta(questionType);
+    const { meta, attempt, comment, validate, check } = getNewQuestionMeta(
+      questionType
+    );
 
     this.attempt = attempt;
     this.validate = validate;
     this.check = check;
+    this.comment = comment;
 
     if (questionMeta) {
       this.meta = { ...questionMeta };
-      this.attachments = [ ...questionAttachments ];
+      this.attachments = [...questionAttachments];
     } else {
       this.meta = meta;
 

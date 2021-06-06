@@ -5,7 +5,7 @@
         <el-button type="success" icon="el-icon-plus" size="mini" circle />
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="text">Continue Writing</el-dropdown-item>
+        <el-dropdown-item command="text">Main sentence</el-dropdown-item>
         <el-dropdown-item :command="2">Two alternatives</el-dropdown-item>
         <el-dropdown-item :command="3">Three alternatives</el-dropdown-item>
       </el-dropdown-menu>
@@ -67,7 +67,7 @@
           <el-button type="success" icon="el-icon-plus" size="mini" circle />
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="text">Continue Writing</el-dropdown-item>
+          <el-dropdown-item command="text">Main sentence</el-dropdown-item>
           <el-dropdown-item :command="2">Two alternatives</el-dropdown-item>
           <el-dropdown-item :command="3">Three alternatives</el-dropdown-item>
         </el-dropdown-menu>
